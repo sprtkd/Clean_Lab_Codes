@@ -1,0 +1,834 @@
+SQL> select * from tab
+  2  ;
+
+TNAME                          TABTYPE CLUSTERID                                                    
+------------------------------ ------- ---------                                                    
+ACCOUNT                        TABLE                                                                
+BONUS                          TABLE                                                                
+CUST                           TABLE                                                                
+DEPT                           TABLE                                                                
+EMP                            TABLE                                                                
+INVOICE                        TABLE                                                                
+MOVIE                          TABLE                                                                
+RECEIPT                        TABLE                                                                
+SALGRADE                       TABLE                                                                
+STUDENT                        TABLE                                                                
+
+10 rows selected.
+
+SQL> select cust
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> /
+
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select cust from tab;
+select cust from tab
+       *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select * from cust
+  2  ;
+
+CUS LNAME           FNAME           AR  PHONE_NO                                                    
+--- --------------- --------------- -- ---------                                                    
+1   Dey             Suprotik        Ko  22446677                                                    
+2   Sharma          Chandan         Ko  11225566                                                    
+3   Sharma          Vivek           Ba  33446677                                                    
+4   Agarwal         Milind          Ri  33665587                                                    
+5   Bhowmick        Malay           Sa  68646376                                                    
+
+SQL> select * from movie;
+
+    MV_NO TITE                      TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        2 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        3 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        4 Despicable Me 3           Animation  Gru&Dru                         130                  
+
+SQL> alter table "cust"
+  2  rename column "tite" to "title";
+rename column "tite" to "title"
+       *
+ERROR at line 2:
+ORA-14155: missing PARTITION or SUBPARTITION keyword 
+
+
+SQL> alter table cust
+  2  rename column tite to title;
+rename column tite to title
+       *
+ERROR at line 2:
+ORA-14155: missing PARTITION or SUBPARTITION keyword 
+
+
+SQL> alter table cust rename column tite to title;
+alter table cust rename column tite to title
+                        *
+ERROR at line 1:
+ORA-14155: missing PARTITION or SUBPARTITION keyword 
+
+
+SQL> alter table cust drop tite
+  2  ;
+alter table cust drop tite
+                      *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> alter table cust drop column tite;
+alter table cust drop column tite
+                             *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> alter table movie drop column tite;
+
+Table altered.
+
+SQL> select * from movie;
+
+    MV_NO TYPE       STAR                          PRICE                                            
+--------- ---------- ------------------------- ---------                                            
+        1 Comic      Tom Holland                     100                                            
+        2 Comic      Benedict Cumberbatch             80                                            
+        3 Mystery    Sabyasachi Chakroborty          110                                            
+        4 Animation  Gru&Dru                         130                                            
+
+SQL> alter table movie
+  2  add(title varchar2(25));
+
+Table altered.
+
+SQL> select * from movie;
+
+    MV_NO TYPE       STAR                          PRICE TITLE                                      
+--------- ---------- ------------------------- --------- -------------------------                  
+        1 Comic      Tom Holland                     100                                            
+        2 Comic      Benedict Cumberbatch             80                                            
+        3 Mystery    Sabyasachi Chakroborty          110                                            
+        4 Animation  Gru&Dru                         130                                            
+
+SQL> delete table movie;
+delete table movie
+       *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> delete movie;
+
+4 rows deleted.
+
+SQL> select * from movie;
+
+no rows selected
+
+SQL> desc moie
+ERROR:
+ORA-04043: object moie does not exist 
+
+
+SQL> desc movie;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ MV_NO                                                          NUMBER(2)
+ TYPE                                                           VARCHAR2(10)
+ STAR                                                           VARCHAR2(25)
+ PRICE                                                          NUMBER(8,2)
+ TITLE                                                          VARCHAR2(25)
+
+SQL> drop movie;
+drop movie
+     *
+ERROR at line 1:
+ORA-00950: invalid DROP option 
+
+
+SQL> drop table movie;
+
+Table dropped.
+
+SQL> desc movie;
+ERROR:
+ORA-04043: object movie does not exist 
+
+
+SQL> create table movie
+  2  (My_no number(2),
+  3  title varchar2(25),
+  4  type varchar2(10),
+  5  star varchar2(25),
+  6  price number(8,2));
+
+Table created.
+
+SQL> desc movie;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ MY_NO                                                          NUMBER(2)
+ TITLE                                                          VARCHAR2(25)
+ TYPE                                                           VARCHAR2(10)
+ STAR                                                           VARCHAR2(25)
+ PRICE                                                          NUMBER(8,2)
+
+SQL> insert into movie
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00926: missing VALUES keyword 
+
+
+SQL> drop table movie;
+
+Table dropped.
+
+SQL> create table movie
+  2  (mv_no number(2),
+  3  title varchar2(2),
+  4  type varchar2(10),
+  5  star varchar2(25),
+  6  price number(8,2));
+
+Table created.
+
+SQL> desc movie;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ MV_NO                                                          NUMBER(2)
+ TITLE                                                          VARCHAR2(2)
+ TYPE                                                           VARCHAR2(10)
+ STAR                                                           VARCHAR2(25)
+ PRICE                                                          NUMBER(8,2)
+
+SQL> insert into movie
+  2  values('&mv_no','&title','&type','&star','&price');
+Enter value for mv_no: 1
+Enter value for title: Despicable Me 3
+Enter value for type: Animation
+Enter value for star: Gru&Dru
+Enter value for price: 120.00
+old   2: values('&mv_no','&title','&type','&star','&price')
+new   2: values('1','Despicable Me 3','Animation','Gru&Dru','120.00')
+insert into movie
+            *
+ERROR at line 1:
+ORA-01401: inserted value too large for column 
+
+
+SQL> drop table movie;
+
+Table dropped.
+
+SQL> create table movie
+  2  (mv_no number(2),
+  3  title varchar2(25),
+  4  type varchar2(10),
+  5  star varchar2(25),
+  6  price number(8,2));
+
+Table created.
+
+SQL> insert into movie
+  2  values('&mv_no','&title','&type','&star','&price');
+Enter value for mv_no: 1
+Enter value for title: Despicable Me 3
+Enter value for type: Animation
+Enter value for star: Gru&Dru
+Enter value for price: 120.00
+old   2: values('&mv_no','&title','&type','&star','&price')
+new   2: values('1','Despicable Me 3','Animation','Gru&Dru','120.00')
+
+1 row created.
+
+SQL> /
+Enter value for mv_no: 2
+Enter value for title: Spiderman: Homecoming
+Enter value for type: Comic
+Enter value for star: Tom Holland
+Enter value for price: 100
+old   2: values('&mv_no','&title','&type','&star','&price')
+new   2: values('2','Spiderman: Homecoming','Comic','Tom Holland','100')
+
+1 row created.
+
+SQL> /
+Enter value for mv_no: 3
+Enter value for title: Dr. Strange
+Enter value for type: Comic
+Enter value for star: Benedict Cumberbatch
+Enter value for price: 80
+old   2: values('&mv_no','&title','&type','&star','&price')
+new   2: values('3','Dr. Strange','Comic','Benedict Cumberbatch','80')
+
+1 row created.
+
+SQL> /
+Enter value for mv_no: 4
+Enter value for title: Tintorettor Jishu
+Enter value for type: Mystery
+Enter value for star: Sabyasachi Chakroborty
+Enter value for price: 110
+old   2: values('&mv_no','&title','&type','&star','&price')
+new   2: values('4','Tintorettor Jishu','Mystery','Sabyasachi Chakroborty','110')
+
+1 row created.
+
+SQL> select * from movie;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+
+SQL> select * from invoice
+  2  ;
+
+INV     MV_NO CUS ISSUE_DAT RETURN_DA                                                               
+--- --------- --- --------- ---------                                                               
+1           4 1   12-JUL-17 20-JUL-17                                                               
+2           3 2   13-SEP-17 13-NOV-17                                                               
+3           1 3   11-SEP-16 13-OCT-16                                                               
+4           3 5   06-MAY-16 15-JUN-17                                                               
+
+SQL> desc cust
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ CUST_ID                                                        VARCHAR2(3)
+ LNAME                                                          VARCHAR2(15)
+ FNAME                                                          VARCHAR2(15)
+ AREA                                                           VARCHAR2(2)
+ PHONE_NO                                                       NUMBER(8)
+
+SQL> select fname, lname from cust;
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Suprotik        Dey                                                                                 
+Chandan         Sharma                                                                              
+Vivek           Sharma                                                                              
+Milind          Agarwal                                                                             
+Malay           Bhowmick                                                                            
+
+SQL> select fname, area from cust;
+
+FNAME           AR                                                                                  
+--------------- --                                                                                  
+Suprotik        Ko                                                                                  
+Chandan         Ko                                                                                  
+Vivek           Ba                                                                                  
+Milind          Ri                                                                                  
+Malay           Sa                                                                                  
+
+SQL> select distinct type from movie;
+
+TYPE                                                                                                
+----------                                                                                          
+Animation                                                                                           
+Comic                                                                                               
+Mystery                                                                                             
+
+SQL> select fname, lname from cust where phone_no > 55000000;
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Malay           Bhowmick                                                                            
+
+SQL> select * from invoice where issue_date like '_SEP_';
+
+no rows selected
+
+SQL> select * from invoice where issue_date like '%%-SEP-%%';
+
+INV     MV_NO CUS ISSUE_DAT RETURN_DA                                                               
+--- --------- --- --------- ---------                                                               
+2           3 2   13-SEP-17 13-NOV-17                                                               
+3           1 3   11-SEP-16 13-OCT-16                                                               
+
+SQL> insert into movie
+  2  values('&mv_no','&title','&type','&star','&price');
+Enter value for mv_no: 5
+Enter value for title: Krishh 3
+Enter value for type: Action
+Enter value for star: Hrithik Roshan
+Enter value for price: 110
+old   2: values('&mv_no','&title','&type','&star','&price')
+new   2: values('5','Krishh 3','Action','Hrithik Roshan','110')
+
+1 row created.
+
+SQL> /
+Enter value for mv_no: 6
+Enter value for title: Golmaal
+Enter value for type: Comedy
+Enter value for star: Ajay Devgan
+Enter value for price: 70
+old   2: values('&mv_no','&title','&type','&star','&price')
+new   2: values('6','Golmaal','Comedy','Ajay Devgan','70')
+
+1 row created.
+
+SQL> select * from movie where type like 'Action' or 'Comedy';
+select * from movie where type like 'Action' or 'Comedy'
+                                                       *
+ERROR at line 1:
+ORA-00920: invalid relational operator 
+
+
+SQL> select * from movie where type like 'Action';
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+
+SQL> select * from movie where type like 'Action' or type like 'Comedy';
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+
+SQL> select * from movie;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+
+6 rows selected.
+
+SQL> select * from moviw where price > 75 and price <= 115;
+select * from moviw where price > 75 and price <= 115
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> select * from movie where price > 75 and price <= 115;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+
+SQL> select * from invoice;
+
+INV     MV_NO CUS ISSUE_DAT RETURN_DA                                                               
+--- --------- --- --------- ---------                                                               
+1           4 1   12-JUL-17 20-JUL-17                                                               
+2           3 2   13-SEP-17 13-NOV-17                                                               
+3           1 3   11-SEP-16 13-OCT-16                                                               
+4           3 5   06-MAY-16 15-JUN-17                                                               
+
+SQL> select mv_no, inv_no where inv_no < 3;
+select mv_no, inv_no where inv_no < 3
+                     *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select mv_no, inv_no from invoice where inv_no < 3;
+
+    MV_NO INV                                                                                       
+--------- ---                                                                                       
+        4 1                                                                                         
+        3 2                                                                                         
+
+SQL> select fname,lname from cust where fname like '_a%';
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Malay           Bhowmick                                                                            
+
+SQL> select lname from cust where lname like 's%' or lname like 'j%';
+
+no rows selected
+
+SQL> select * from cust;
+
+CUS LNAME           FNAME           AR  PHONE_NO                                                    
+--- --------------- --------------- -- ---------                                                    
+1   Dey             Suprotik        Ko  22446677                                                    
+2   Sharma          Chandan         Ko  11225566                                                    
+3   Sharma          Vivek           Ba  33446677                                                    
+4   Agarwal         Milind          Ri  33665587                                                    
+5   Bhowmick        Malay           Sa  68646376                                                    
+
+SQL> select lname from cust where lname like 'S%' or lname like 'J%';
+
+LNAME                                                                                               
+---------------                                                                                     
+Sharma                                                                                              
+Sharma                                                                                              
+
+SQL> select fname,lname from cust
+  2  where area like '_a%';
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Vivek           Sharma                                                                              
+Malay           Bhowmick                                                                            
+
+SQL> select fname,lname from cust
+  2  where area like 'Ko,;
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> select fname,lname from cust
+  2  where area like 'Ko';
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Suprotik        Dey                                                                                 
+Chandan         Sharma                                                                              
+
+SQL> select mv_no, title, type from movie where star like 'T%';
+
+    MV_NO TITLE                     TYPE                                                            
+--------- ------------------------- ----------                                                      
+        2 Spiderman: Homecoming     Comic                                                           
+
+SQL> select * from moie;
+select * from moie
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> select * from movie;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+
+6 rows selected.
+
+SQL> select title, price*15 where price > 100;
+select title, price*15 where price > 100
+                       *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select title, price*15 from movie where price > 100;
+
+TITLE                      PRICE*15                                                                 
+------------------------- ---------                                                                 
+Despicable Me 3                1800                                                                 
+Tintorettor Jishu              1650                                                                 
+Krishh 3                       1650                                                                 
+
+SQL> select * from movie order by title asc;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+
+6 rows selected.
+
+SQL> select title, type from type not like 'Comedy';
+select title, type from type not like 'Comedy'
+                             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select title, type from movie where type not like 'Comedy';
+
+TITLE                     TYPE                                                                      
+------------------------- ----------                                                                
+Despicable Me 3           Animation                                                                 
+Spiderman: Homecoming     Comic                                                                     
+Dr. Strange               Comic                                                                     
+Tintorettor Jishu         Mystery                                                                   
+Krishh 3                  Action                                                                    
+
+SQL> select sqrt(price) from movie;
+
+SQRT(PRICE)                                                                                         
+-----------                                                                                         
+  10.954451                                                                                         
+         10                                                                                         
+  8.9442719                                                                                         
+  10.488088                                                                                         
+  10.488088                                                                                         
+  8.3666003                                                                                         
+
+6 rows selected.
+
+SQL> select price/(price-100) from movie where title like 'Krishh 3';
+
+PRICE/(PRICE-100)                                                                                   
+-----------------                                                                                   
+               11                                                                                   
+
+SQL> desc cust;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ CUST_ID                                                        VARCHAR2(3)
+ LNAME                                                          VARCHAR2(15)
+ FNAME                                                          VARCHAR2(15)
+ AREA                                                           VARCHAR2(2)
+ PHONE_NO                                                       NUMBER(8)
+
+SQL> insert into cust
+  2  values('&cust_id','&lname','&fname','&area','&phone_no');
+Enter value for cust_id: ssssssssssssssssssssssssssssssssssss
+Enter value for lname: s
+Enter value for fname: s
+Enter value for area: s
+Enter value for phone_no: s
+old   2: values('&cust_id','&lname','&fname','&area','&phone_no')
+new   2: values('ssssssssssssssssssssssssssssssssssss','s','s','s','s')
+values('ssssssssssssssssssssssssssssssssssss','s','s','s','s')
+                                                          *
+ERROR at line 2:
+ORA-01401: inserted value too large for column 
+
+
+SQL> select * from cust
+  2  ;
+
+CUS LNAME           FNAME           AR  PHONE_NO                                                    
+--- --------------- --------------- -- ---------                                                    
+1   Dey             Suprotik        Ko  22446677                                                    
+2   Sharma          Chandan         Ko  11225566                                                    
+3   Sharma          Vivek           Ba  33446677                                                    
+4   Agarwal         Milind          Ri  33665587                                                    
+5   Bhowmick        Malay           Sa  68646376                                                    
+
+SQL> insert into cust
+  2  values('&cust_id','&lname','&fname','&area','&phone_no');
+Enter value for cust_id: 6
+Enter value for lname: Dey
+Enter value for fname: Sandipan
+Enter value for area: Ko
+Enter value for phone_no: 
+old   2: values('&cust_id','&lname','&fname','&area','&phone_no')
+new   2: values('6','Dey','Sandipan','Ko','')
+
+1 row created.
+
+SQL> select
+  2  * from cust;
+
+CUS LNAME           FNAME           AR  PHONE_NO                                                    
+--- --------------- --------------- -- ---------                                                    
+1   Dey             Suprotik        Ko  22446677                                                    
+2   Sharma          Chandan         Ko  11225566                                                    
+3   Sharma          Vivek           Ba  33446677                                                    
+4   Agarwal         Milind          Ri  33665587                                                    
+5   Bhowmick        Malay           Sa  68646376                                                    
+6   Dey             Sandipan        Ko                                                              
+
+6 rows selected.
+
+SQL> select fname, lname , area, cust_id from cust where phone_no like '';
+
+no rows selected
+
+SQL> select fname, lname , area, cust_id from cust where phone_no is NULL;
+
+FNAME           LNAME           AR CUS                                                              
+--------------- --------------- -- ---                                                              
+Sandipan        Dey             Ko 6                                                                
+
+SQL> insert into cust
+  2  values('&cust_id','&lname','&fname','&area','&phone_no');
+Enter value for cust_id: 7
+Enter value for lname: 
+Enter value for fname: Fafa
+Enter value for area: Ba
+Enter value for phone_no: 788768
+old   2: values('&cust_id','&lname','&fname','&area','&phone_no')
+new   2: values('7','','Fafa','Ba','788768')
+
+1 row created.
+
+SQL> select fname from cust where lname is NULL;
+
+FNAME                                                                                               
+---------------                                                                                     
+Fafa                                                                                                
+
+SQL> select count(cust_id) from cust;
+
+COUNT(CUST_ID)                                                                                      
+--------------                                                                                      
+             7                                                                                      
+
+SQL> select sum(price) from movie;
+
+SUM(PRICE)                                                                                          
+----------                                                                                          
+       590                                                                                          
+
+SQL> select avg(price) from movie;
+
+AVG(PRICE)                                                                                          
+----------                                                                                          
+ 98.333333                                                                                          
+
+SQL> select max(price) as max_price, min(price
+  2  
+SQL> 
+SQL> select max(price) as max_price, min(price) as min_price from movie;
+
+MAX_PRICE MIN_PRICE                                                                                 
+--------- ---------                                                                                 
+      120        70                                                                                 
+
+SQL> select * from movie;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+
+6 rows selected.
+
+SQL> select count(mv_no) from movie where price >= 100;
+
+COUNT(MV_NO)                                                                                        
+------------                                                                                        
+           4                                                                                        
+
+SQL> select * from invoice;
+
+INV     MV_NO CUS ISSUE_DAT RETURN_DA                                                               
+--- --------- --- --------- ---------                                                               
+1           4 1   12-JUL-17 20-JUL-17                                                               
+2           3 2   13-SEP-17 13-NOV-17                                                               
+3           1 3   11-SEP-16 13-OCT-16                                                               
+4           3 5   06-MAY-16 15-JUN-17                                                               
+
+SQL> select 'The Invoice no. of Customer Id '||cust_id||' is '||inv_no||' and Movie no. is '||mv_no||'.' from invoice;
+
+'THEINVOICENO.OFCUSTOMERID'||CUST_ID||'IS'||INV_NO||'ANDMOVIENO.IS'||MV_NO||'.'                     
+----------------------------------------------------------------------------------------------------
+The Invoice no. of Customer Id 1 is 1 and Movie no. is 4.                                           
+The Invoice no. of Customer Id 2 is 2 and Movie no. is 3.                                           
+The Invoice no. of Customer Id 3 is 3 and Movie no. is 1.                                           
+The Invoice no. of Customer Id 5 is 4 and Movie no. is 3.                                           
+
+SQL> select cust_id||' has taken Movie no. '||mv_no||' on '||issue_date||' and will return on ||return_date||'.';
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> select cust_id||' has taken Movie no. '||mv_no||' on '||issue_date||' and will return on ||return_date||'.' from invoice;
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> select cust_id||' has taken Movie no. '||mv_no||' on '||issue_date||' and will return on '||
+  2  return_date||'.' from invoice;
+
+CUST_ID||'HASTAKENMOVIENO.'||MV_NO||'ON'||ISSUE_DATE||'ANDWILLRETURNON'||RETURN_DATE||'.'           
+----------------------------------------------------------------------------------------------------
+1 has taken Movie no. 4 on 12-JUL-17 and will return on 20-JUL-17.                                  
+2 has taken Movie no. 3 on 13-SEP-17 and will return on 13-NOV-17.                                  
+3 has taken Movie no. 1 on 11-SEP-16 and will return on 13-OCT-16.                                  
+5 has taken Movie no. 3 on 06-MAY-16 and will return on 15-JUN-17.                                  
+
+SQL> select avg(price), type from movie group by type;
+
+AVG(PRICE) TYPE                                                                                     
+---------- ----------                                                                               
+       110 Action                                                                                   
+       120 Animation                                                                                
+        70 Comedy                                                                                   
+        90 Comic                                                                                    
+       110 Mystery                                                                                  
+
+SQL> select count(mv_id), type from movie group by type;
+select count(mv_id), type from movie group by type
+             *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL>  select count(mv_no), type from movie group by type;
+
+COUNT(MV_NO) TYPE                                                                                   
+------------ ----------                                                                             
+           1 Action                                                                                 
+           1 Animation                                                                              
+           1 Comedy                                                                                 
+           2 Comic                                                                                  
+           1 Mystery                                                                                
+
+SQL> select count(mv_no), type from movie group by type where type like 'Comic' or type like 'Action';
+select count(mv_no), type from movie group by type where type like 'Comic' or type like 'Action'
+                                                   *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select count(mv_no), type from movie where type like 'Comic' or type like 'Action';
+select count(mv_no), type from movie where type like 'Comic' or type like 'Action'
+                     *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> select count(mv_no), type from movie where type like 'Comic' or type like 'Action' group by type;
+
+COUNT(MV_NO) TYPE                                                                                   
+------------ ----------                                                                             
+           1 Action                                                                                 
+           2 Comic                                                                                  
+
+SQL> select avg(price),type from movie where price <= 100 group by type;
+
+AVG(PRICE) TYPE                                                                                     
+---------- ----------                                                                               
+        70 Comedy                                                                                   
+        90 Comic                                                                                    
+
+SQL> select avg(price),type from movie where type like 'Comedy' or type like 'Action' and price >= 100 group by type;
+
+AVG(PRICE) TYPE                                                                                     
+---------- ----------                                                                               
+       110 Action                                                                                   
+        70 Comedy                                                                                   
+
+SQL> spool off;
