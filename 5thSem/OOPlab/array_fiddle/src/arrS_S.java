@@ -18,20 +18,18 @@ public class arrS_S {
 		
 		System.out.println("Your array is: ");
 		
-		for(int i=0; i < arr.length; i++)
-		{
-			System.out.print(arr[i] + " ");
-		}
+		printArr(arr);
 		
 		bubbleSort(arr);
 		
 		System.out.println("\nYour sorted array is: ");
 		
-		for(int i=0; i < arr.length; i++)
-		{
-			System.out.print(arr[i] + " ");
-		}
+		printArr(arr);
 		
+		reverseArr(arr);
+		System.out.println("\nYour reversed array is: ");
+		
+		printArr(arr);
 		
 	}
 	
@@ -48,6 +46,31 @@ public class arrS_S {
 					arr[j] = arr[j+1];
 					arr[j+1] = temp;
 				}
+	}
+	
+	public static void reverseArr(int arr[])
+	{
+		int temp,start=0,end=(arr.length-1);
+		
+		while(start<end)
+		{
+			temp = arr[start];
+			arr[start] = arr[end];
+			arr[end] = temp;
+			start++;
+			end--;
+			
+		}
+	}
+	
+	public static void printArr(int arr[])
+	{
+		System.out.print("\n");
+		for(int i=0; i < arr.length; i++)
+		{
+			System.out.print(arr[i] + " ");
+		}
+		System.out.print("\n");
 	}
 
 }
