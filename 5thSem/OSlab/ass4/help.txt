@@ -1,0 +1,16 @@
+***WELCOME TO SPRTKD SHELL HELP***
+
+Copyright @ Suprotik Dey
+
+
+-Use the shell at your own risk...
+List of Commands supported:
+
+>cd
+>ls
+>exit
+>all other general commands available in UNIX shell
+
+-Unfortunately PIPING is NOT Available, support coming soon
+
+
