@@ -11,6 +11,7 @@
 
 #define MAXCOM 1000
 #define MAXLIST 100
+#define runtimeMax 50000
 
 #define clear() printf("\033[H\033[J")
 
@@ -72,7 +73,21 @@ void execArgs(char **parsed)
         }
         else
         {
-        	wait(NULL);
+        	int i=runtimeMax,j=1;//giving 50000 useconds to execute
+			while(i&&j)
+			{
+				
+				if(waitpid(pid,NULL, WNOHANG))
+				{
+					j=0;
+					break;
+				}
+				usleep(1);
+				i--;
+			}	
+			
+			if(j)
+				kill(pid, SIGKILL);
         	return;
         }
     
@@ -80,21 +95,32 @@ void execArgs(char **parsed)
 
 void execArgsPiped(char **parsed, char **parsedpipe)
 {
-	int pipefd[2];//array to get the input and output end of a pipe...                      
+	int pipefd[2];  //0 is read end, 1 is write end 
 	pid_t p1, p2;
 
-	pipe(pipefd);//initialize the pipe..
+	if(pipe(pipefd)<0)
+	{
+		printf("\nPipe could not be initialized");
+		return;
+	}
 	p1 = fork();
+	if(p1<0)
+	{
+		printf("\nCould not fork");
+		return;
+	}
+	
 	if( p1 == 0 )
 	{
-		//child 1 executing
-		close(pipefd[0]);//process1 doenst need to read from pipe
-		dup2(pipefd[1], STDOUT_FILENO);//write the file of process 1...
+		//child 1 executing.. it only needs to write at the write end
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 		
 		if(execvp(parsed[0], parsed)<0)
         	{
         		printf("\nCould not execute command 1..");
+        		exit(0);
         	}
 	}
 	else
@@ -102,21 +128,60 @@ void execArgsPiped(char **parsed, char **parsedpipe)
 		//parent executing
 		p2 = fork();
 		
-		//child 2 executing
+		if(p2<0)
+		{
+			printf("\nCould not fork");
+			return;
+		}
+		
+		//child 2 executing.. it only needs to read at the read end
 		if (p2 == 0)
                 {
 			close(pipefd[1]);
-			dup2(pipefd[0], STDIN_FILENO);//read the file from process1...
+			dup2(pipefd[0], STDIN_FILENO);
 			close(pipefd[0]);
 			if(execvp(parsedpipe[0], parsedpipe)<0)
 			{
         			printf("\nCould not execute command 2..");
+        			exit(0);
         		}
                 }
 		else
 		{
 			//parent executing
-			wait(NULL);
+			int i=runtimeMax,j=1;//giving some useconds to execute
+			while(i&&j)
+			{
+				
+				if(waitpid(p1,NULL, WNOHANG))
+				{
+					j=0;
+					break;
+				}
+				usleep(1);
+				i--;
+			}	
+			
+			if(j)
+				kill(p1, SIGKILL);
+			
+			
+			i=runtimeMax,j=1;//giving some useconds to execute
+			while(i&&j)
+			{
+				
+				if(waitpid(p2,NULL, WNOHANG))
+				{
+					j=0;
+					break;
+				}
+				usleep(1);
+				i--;
+			}	
+			
+			if(j)
+				kill(p2, SIGKILL);
+
 		}
 	}
 }

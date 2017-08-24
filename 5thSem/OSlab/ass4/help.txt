@@ -10,7 +10,7 @@ List of Commands supported:
 >ls
 >exit
 >all other general commands available in UNIX shell
-
--Unfortunately PIPING is NOT Available, support coming soon
+>pipe handling
+>improper space handling
 
 
