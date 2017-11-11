@@ -1,0 +1,4 @@
+set dgrid3d 40,40,2
+set xlabel " data style lines, dgrid3d 40,40,2"
+set style data lines
+splot "out.txt"
