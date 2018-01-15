@@ -1,0 +1,25 @@
+//server for ass1
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+
+#define IP_PROTOCOL 0
+#define PORT_NO 15050
+
+int main()
+{
+	int sockfd;
+	struct sockaddr_in address;
+	
+	sockfd = socket(PF_INET, SOCK_STREAM, IP_PROTOCOL);
+	if(sockfd==0)
+	{
+		printf("Socket file descriptor not received!!\n");
+	}
+	else
+		printf("Socket file descriptor %d received\n",sockfd);
+	
+	if(bind(sockfd, &address
+	
+	return 0;
+}
