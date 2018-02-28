@@ -15,10 +15,13 @@
 #include <netinet/ip_icmp.h>
 #include <time.h>
 #include <fcntl.h>
+#include <signal.h>
 
 #define PING_PKT_S 64
 #define PORT_NO 0
 #define PING_SLEEP_RATE 1000000
+
+int pingloop=1;
 
 struct ping_pkt
 {
@@ -40,6 +43,13 @@ unsigned short checksum(void *b, int len)
 	result = ~sum;
 	return result;
 }
+
+void intHandler(int dummy)
+{
+    printf("\nExiting..\n\n");
+    pingloop=0;
+}
+
 
 char *dns_lookup(char *addr_host, struct sockaddr_in *addr_con)
 {
@@ -87,14 +97,14 @@ char* reverse_dns_lookup(char *ip_addr)
 
 void send_ping(int ping_sockfd, struct sockaddr_in *ping_addr,char *ping_dom,char *ping_ip, char *rev_host)
 {
-	int ttl_val=64, msg_count=0,i,addr_len,flag=1;
+	int ttl_val=64, msg_count=0,i,addr_len,flag=1, msg_received_count=0;
 	struct ping_pkt pckt;
 	struct sockaddr_in r_addr;
-	struct timespec time_start, time_end;
-	long double rtt_msec=0;
+	struct timespec time_start, time_end, tfs,tfe;
+	long double rtt_msec=0, total_msec=0;
 
 	bzero(&pckt, sizeof(pckt));
-
+	clock_gettime(CLOCK_REALTIME, &tfs);
 	//set socket options at ip to TTL and value to 255
 	if ( setsockopt(ping_sockfd, SOL_IP, IP_TTL, &ttl_val, sizeof(ttl_val)) != 0)
 	{
@@ -110,7 +120,7 @@ void send_ping(int ping_sockfd, struct sockaddr_in *ping_addr,char *ping_dom,cha
 		printf("Request nonblocking I/O failed..");
 
 	//send icmp packet in an infinite loop
-	while(1)
+	while(pingloop)
 	{
 		addr_len=sizeof(r_addr);
 		if ( recvfrom(ping_sockfd, &pckt, sizeof(pckt), 0, (struct sockaddr*)&r_addr, &addr_len) <= 0 && msg_count>1)
@@ -120,8 +130,10 @@ void send_ping(int ping_sockfd, struct sockaddr_in *ping_addr,char *ping_dom,cha
 			clock_gettime(CLOCK_REALTIME, &time_end);
 			rtt_msec = (time_end.tv_sec-time_start.tv_sec)*1000.0 + (double)(time_end.tv_nsec-time_start.tv_nsec)/1000000.0;
 			if(msg_count>1 && flag)
-				printf("%d bytes from %s (h: %s) (%s) msg_seq=%d ttl=%d rtt = %Lf ms.\n",PING_PKT_S,ping_dom,rev_host,ping_ip,msg_count,ttl_val,rtt_msec);
-		
+			{
+				printf("%d bytes from %s (h: %s) (%s) msg_seq=%d ttl=%d rtt = %Lf ms.\n",PING_PKT_S,ping_dom,rev_host,ping_ip,msg_count-1,ttl_val,rtt_msec);
+				msg_received_count++;
+			}
 		}
 		flag=1;
 		bzero(&pckt, sizeof(pckt));
@@ -140,6 +152,10 @@ void send_ping(int ping_sockfd, struct sockaddr_in *ping_addr,char *ping_dom,cha
 			flag=0;
 		}	
 	}
+	clock_gettime(CLOCK_REALTIME, &tfe);
+	total_msec = (tfe.tv_sec-tfs.tv_sec)*1000.0 + (double)(tfe.tv_nsec-tfs.tv_nsec)/1000000.0;
+	printf("\n===%s ping statistics===\n",ping_ip);
+	printf("\n%d packets sent, %d packets received, %f percent packet loss. Total time: %Lf ms.\n\n",msg_count-1,msg_received_count, ((msg_count-1 - msg_received_count)/(1.0*(msg_count-1)))*100.0,total_msec); 
 }
 
 int main(int argc, char *argv[])
@@ -178,6 +194,7 @@ int main(int argc, char *argv[])
 		printf("\nSocket file descriptor %d received\n",sockfd);
 
 	//send pings continuously
+	signal(SIGINT, intHandler);
 	send_ping(sockfd, &addr_con, reverse_hostname,ip_addr,argv[1]);
 	
 	return 0;
