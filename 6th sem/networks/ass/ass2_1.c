@@ -76,24 +76,27 @@ int main()
   	pid_t net_pid;
   	int num_of_clients=0;
   	
+  	FILE *fp;
+  	
+  	
 	//socket()
 	sockfd = socket(AF_INET, SOCK_STREAM, IP_PROTOCOL);
 	if(sockfd<0)
-		printf("Socket file descriptor not received!!\n");
+		printf("\nSocket file descriptor not received!!\n");
 	else
-		printf("Socket file descriptor %d received\n",sockfd);
+		printf("\nSocket file descriptor %d received\n",sockfd);
 	
 	//bind()
 	if(bind(sockfd, (struct sockaddr *)&addr_con, sizeof(addr_con))==0)
-		printf("Successfully binded!\n");
+		printf("\nSuccessfully binded!\n");
 	else
-		printf("Binding Failed!\n");
+		printf("\nBinding Failed!\n");
 	
 	//listen()
 	if(listen(sockfd,B_LOG)>=0)
-		printf("Listening success!\n");
+		printf("\nListening success!\n");
 	else
-		printf("Listening failed!\n");
+		printf("\nListening failed!\n");
 		
 	while(num_of_clients<B_LOG)//server accept loop
 	{
@@ -105,8 +108,15 @@ int main()
 			printf("Connection Accepted!\n");
 		num_of_clients++;
 		printf("\nNumber of Clients accepted: %d",num_of_clients);
-		printf("\nClient Adress = %s",inet_ntop(AF_INET,&(addr_con.sin_addr), net_buf,sizeof(net_buf)));
-		
+		printf("\nClient Address = %s\n",inet_ntop(AF_INET,&(addr_con.sin_addr), net_buf,sizeof(net_buf)));
+		fp=fopen("connectionLog.txt","a");
+	  	if(fp==NULL)
+	  		printf("\nCould not open file");
+	  	else
+	  		printf("\nLog file successfully opened!");
+		fputs(net_buf,fp);
+		fputc('\n',fp);
+		fclose(fp);
 		net_pid = fork();//creating a child to handle each new client
 		
 		if(net_pid==0)

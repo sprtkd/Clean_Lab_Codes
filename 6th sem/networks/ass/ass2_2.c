@@ -8,12 +8,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <arpa/inet.h>
+#include <time.h>
 
 #define IP_PROTOCOL 0
-#define PORT_NO 15050
+#define PORT_NO 15000
 #define NET_BUF_SIZE 512
 #define NET_SEND_FLAG 0
-#define IP_ADDRESS "127.0.0.1"//localhost
+#define IP_ADDRESS "10.24.109.30"//localhost
 
 void clearBuf(char *b)
 {
@@ -53,6 +54,12 @@ int main()
   	char net_buf[NET_BUF_SIZE];
   	pid_t net_pid;
   	
+  	struct timespec start, stop;
+	long long int time_taken;
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	
+	
+  	
 	//socket()
 	sockfd = socket(AF_INET, SOCK_STREAM, IP_PROTOCOL);
 	if(sockfd==0)
@@ -74,9 +81,11 @@ int main()
 	}
 	else
 	{
-		printf("\nConnection Success.. Press Enter..\n");
+		printf("\nConnection Success..\n");
 	}	
-	
+	clock_gettime(CLOCK_MONOTONIC , &stop);
+	time_taken = (( stop.tv_sec - start.tv_sec )*1000000000) + ( stop.tv_nsec - start.tv_nsec );
+	printf("\nTime taken for establishing connection: %lld ns\n Press Enter..\n",time_taken);
 	while(1)
 	{
 		takeStrInput(net_buf);
@@ -92,3 +101,4 @@ int main()
 	
 	return 0;
 }
+

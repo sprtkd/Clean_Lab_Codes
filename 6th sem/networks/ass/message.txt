@@ -1,0 +1,18 @@
+This  is  an  implementation of the User Datagram Protocol described in
+RFC 768.  It implements a connectionless,  unreliable  datagram  packet
+service.   Packets  may  be reordered or duplicated before they arrive.
+UDP generates and checks checksums to catch transmission errors.
+
+When a UDP socket is  created,  its  local  and  remote  addresses  are
+unspecified.   Datagrams  can  be  sent  immediately using sendto(2) or
+sendmsg(2) with a valid destination address as an argument.  When  con‐
+nect(2) is called on the socket, the default destination address is set
+and datagrams can now be sent using send(2) or write(2) without  speci‐
+fying  a  destination  address.   It is still possible to send to other
+destinations by passing an address  to  sendto(2)  or  sendmsg(2).   In
+order  to  receive  packets, the socket can be bound to a local address
+first by using bind(2).  Otherwise the socket layer will  automatically
+assign   a   free   local   port   out   of   the   range   defined  by
+/proc/sys/net/ipv4/ip_local_port_range   and   bind   the   socket   to
+INADDR_ANY.
+

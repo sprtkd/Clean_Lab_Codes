@@ -4,7 +4,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -105,7 +104,7 @@ int main()
 			printf("Connection Accepted!\n");
 		num_of_clients++;
 		printf("\nNumber of Clients accepted: %d",num_of_clients);
-		printf("\nClient Adress = %s",inet_ntop(AF_INET,&(addr_con.sin_addr), net_buf,sizeof(net_buf)));
+		//printf("Client Adress = %s",inet_ntop(AF_INET,&acc_sockfd.sin_addr, net_buf,sizeof(net_buf)));
 		
 		net_pid = fork();//creating a child to handle each new client
 		

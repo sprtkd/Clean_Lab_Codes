@@ -60,11 +60,7 @@ int main()
 	else
 		printf("Socket file descriptor %d received\n",sockfd);
 	
-	if(inet_pton(AF_INET, IP_ADDRESS, &addr_con.sin_addr)<=0)
-	{
-		printf("\nInvalid address");
-		return -1;
-	}
+	addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS);
 	
 	//connect
 	if (connect(sockfd, (struct sockaddr *)&addr_con, sizeof(addr_con)) < 0)
@@ -84,7 +80,7 @@ int main()
 		send(sockfd, net_buf, strlen(net_buf), NET_SEND_FLAG);
 		clearBuf(net_buf);
 		//read
-		n_bytes = read(sockfd, net_buf, NET_BUF_SIZE);
+		n_bytes = recv(sockfd, net_buf, NET_BUF_SIZE, NET_SEND_FLAG);
 		net_process(net_buf);
 	}
 	

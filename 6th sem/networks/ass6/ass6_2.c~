@@ -40,7 +40,7 @@ int isInvalidIpAddress(char *ipAddress)
 
 int EnterIp()
 {
-	printf("Enter friend IP address (Crtl+c to exit) :");
+	printf("Enter friend IP address (Crtl+c to exit) :\n");
 	scanf("%s",ip_addr);
 	getchar();
 	//printf("IP: %s\n",ip_addr);
@@ -66,8 +66,8 @@ int takeStrInput(char *buf)
 	
 	if(strlen(msg)==0)
 		return 0;
-	//printf("\t\t\t\t\tYou: ");
-	//printf("%s\n",msg);
+	printf("\t\t\t\t\tYou: ");
+	printf("%s\n",msg);
 
 	//keep size of ip in 0th position
 	buf[0] = (char)strlen(ip_addr);
@@ -100,7 +100,7 @@ int net_process(char *buf)
 	
 	int i;
 	
-	printf("\n\t\t\t\t\tFriend (IP: ");
+	printf("\nFriend (IP: ");
 	
 	for(i=1;i<=(int)buf[0];i++)
 	{
