@@ -1,0 +1,413 @@
+SQL> select * from tab;
+
+TNAME                          TABTYPE CLUSTERID                                                    
+------------------------------ ------- ---------                                                    
+ACCOUNT                        TABLE                                                                
+BONUS                          TABLE                                                                
+BORROW                         TABLE                                                                
+BRANCH                         TABLE                                                                
+CUST                           TABLE                                                                
+CUSTOMER                       TABLE                                                                
+DEPOSIT                        TABLE                                                                
+DEPT                           TABLE                                                                
+EMP                            TABLE                                                                
+INVOICE                        TABLE                                                                
+MOVIE                          TABLE                                                                
+RECEIPT                        TABLE                                                                
+SALGRADE                       TABLE                                                                
+STUDENT                        TABLE                                                                
+
+14 rows selected.
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+
+SQL> select * from branch;
+
+B_NAME     CITY                                                                                     
+---------- ----------                                                                               
+Behala     Kolkata                                                                                  
+Chandni    Delhi                                                                                    
+Navi       Mumbai                                                                                   
+
+SQL> select * from customer;
+
+C_NAME     CITY                                                                                     
+---------- ----------                                                                               
+CHANDAN    Kolkata                                                                                  
+MILIND     Delhi                                                                                    
+VIVEK      Mumbai                                                                                   
+SUPROTIK   Kolkata                                                                                  
+
+SQL> select c_name from deposit, branch where city in
+  2  
+SQL> select c_name from deposit, branch where deposit.b_name=branch.b_name and city in
+  2  (select city from branch,deposit where deposit.b_name=branch.b_name and c_name='MILIND');
+
+C_NAME                                                                                              
+----------                                                                                          
+MILIND                                                                                              
+
+SQL> insert into deposit
+  2  (values('&act_no','&c_name','&b_name','&amount'));
+Enter value for act_no: 4
+Enter value for c_name: VIVEK
+Enter value for b_name: Navi
+Enter value for amount: 5000
+old   2: (values('&act_no','&c_name','&b_name','&amount'))
+new   2: (values('4','VIVEK','Navi','5000'))
+(values('4','VIVEK','Navi','5000'))
+ *
+ERROR at line 2:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> insert into deposit
+  2  values('&act_no','&c_name','&b_name','&amount');
+Enter value for act_no: 4
+Enter value for c_name: VIVEK
+Enter value for b_name: Navi
+Enter value for amount: 5000
+old   2: values('&act_no','&c_name','&b_name','&amount')
+new   2: values('4','VIVEK','Navi','5000')
+
+1 row created.
+
+SQL> select c_name from deposit, branch where deposit.b_name=branch.b_name and city in
+  2  (select city from branch,deposit where deposit.b_name=branch.b_name and c_name='MILIND');
+
+C_NAME                                                                                              
+----------                                                                                          
+MILIND                                                                                              
+VIVEK                                                                                               
+
+SQL> select * from borrow;
+
+LOAN_NO    B_NAME     C_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          Navi       MILIND          2000                                                          
+2          Behala     CHANDAN         5000                                                          
+
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer where deposit.c_name=borrow.c_name and deposit.c_name=customer.c_name and customer.c_name in
+  2  
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer where deposit.c_name=borrow.c_name and deposit.c_name=customer.c_name and customer.c_name in
+  2  
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer where deposit.c_name=borrow.c_name and deposit.c_name=customer.c_name and customer.city in
+  2  (select city from customer where c_name='CHANDAN');
+
+ACT_NO     C_NAME     B_NAME        AMOUNT LOAN_NO    B_NAME        AMOUNT                          
+---------- ---------- ---------- --------- ---------- ---------- ---------                          
+2          CHANDAN    Behala         50000 2          Behala          5000                          
+
+SQL> select * from customer;
+
+C_NAME     CITY                                                                                     
+---------- ----------                                                                               
+CHANDAN    Kolkata                                                                                  
+MILIND     Delhi                                                                                    
+VIVEK      Mumbai                                                                                   
+SUPROTIK   Kolkata                                                                                  
+
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer where deposit.c_name=borrow.c_name and deposit.c_name=customer.c_name and customer.city='Kolkata';
+
+ACT_NO     C_NAME     B_NAME        AMOUNT LOAN_NO    B_NAME        AMOUNT                          
+---------- ---------- ---------- --------- ---------- ---------- ---------                          
+2          CHANDAN    Behala         50000 2          Behala          5000                          
+
+SQL> select * from borrow;
+
+LOAN_NO    B_NAME     C_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          Navi       MILIND          2000                                                          
+2          Behala     CHANDAN         5000                                                          
+
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer where customer.c_name=deposit.c_name and customer.c_name=borrow.c_name and customer.city in
+  2  (select city from customer where c_name='CHANDAN');
+
+ACT_NO     C_NAME     B_NAME        AMOUNT LOAN_NO    B_NAME        AMOUNT                          
+---------- ---------- ---------- --------- ---------- ---------- ---------                          
+2          CHANDAN    Behala         50000 2          Behala          5000                          
+
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer where customer.c_name=deposit.c_name
+  2  or customer.c_name=borrow.c_name and customer.city in
+  3  (select city from customer where c_name='CHANDAN');
+
+ACT_NO     C_NAME     B_NAME        AMOUNT LOAN_NO    B_NAME        AMOUNT                          
+---------- ---------- ---------- --------- ---------- ---------- ---------                          
+1          SUPROTIK   Chandni         3000 2          Behala          5000                          
+2          CHANDAN    Behala         50000 2          Behala          5000                          
+3          MILIND     Navi            1000 2          Behala          5000                          
+4          VIVEK      Navi            5000 2          Behala          5000                          
+1          SUPROTIK   Chandni         3000 1          Navi            2000                          
+1          SUPROTIK   Chandni         3000 2          Behala          5000                          
+2          CHANDAN    Behala         50000 1          Navi            2000                          
+3          MILIND     Navi            1000 1          Navi            2000                          
+3          MILIND     Navi            1000 2          Behala          5000                          
+4          VIVEK      Navi            5000 1          Navi            2000                          
+4          VIVEK      Navi            5000 2          Behala          5000                          
+
+11 rows selected.
+
+SQL> select * from customer;
+
+C_NAME     CITY                                                                                     
+---------- ----------                                                                               
+CHANDAN    Kolkata                                                                                  
+MILIND     Delhi                                                                                    
+VIVEK      Mumbai                                                                                   
+SUPROTIK   Kolkata                                                                                  
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+4          VIVEK      Navi            5000                                                          
+
+SQL> select * from borrow;
+
+LOAN_NO    B_NAME     C_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          Navi       MILIND          2000                                                          
+2          Behala     CHANDAN         5000                                                          
+
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer where customer.c_name=deposit.c_name
+  2  and customer.c_name=borrow.c_name and customer.city in(select city from customer where c_name='SUPROTIK');
+
+ACT_NO     C_NAME     B_NAME        AMOUNT LOAN_NO    B_NAME        AMOUNT                          
+---------- ---------- ---------- --------- ---------- ---------- ---------                          
+2          CHANDAN    Behala         50000 2          Behala          5000                          
+
+SQL> 
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer (where customer.c_name=deposit.c_name or customer.c_name=borrow.c_name) and customer.city in(select city from custome
+  2  
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer (where customer.c_name=deposit.c_name or customer.c_name=borrow.c_name) and customer.city in
+  2  (select city from customer where c_name='CHANDAN');
+select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer (where customer.c_name=deposit.c_name or customer.c_name=borrow.c_name) and customer.city in
+                                                                                                                                           *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select deposit.act_no,deposit.c_name,deposit.b_name,deposit.amount,borrow.loan_no,borrow.b_name,borrow.amount from deposit,borrow,customer where (customer.c_name=deposit.c_name or customer.c_name=borrow.c_name) and customer.city in
+  2  (select city from customer where c_name='CHANDAN');
+
+ACT_NO     C_NAME     B_NAME        AMOUNT LOAN_NO    B_NAME        AMOUNT                          
+---------- ---------- ---------- --------- ---------- ---------- ---------                          
+1          SUPROTIK   Chandni         3000 2          Behala          5000                          
+2          CHANDAN    Behala         50000 2          Behala          5000                          
+4          VIVEK      Navi            5000 2          Behala          5000                          
+3          MILIND     Navi            1000 2          Behala          5000                          
+2          CHANDAN    Behala         50000 1          Navi            2000                          
+1          SUPROTIK   Chandni         3000 1          Navi            2000                          
+1          SUPROTIK   Chandni         3000 2          Behala          5000                          
+
+7 rows selected.
+
+SQL> select deposit.*,borrow.* from deposit,borrow,customer where customer.c_name=borrow.c_name and customer.c_name=deposit.c_name and city in
+  2  (select city from customer where c_name='CHANDAN');
+
+ACT_NO     C_NAME     B_NAME        AMOUNT LOAN_NO    B_NAME     C_NAME        AMOUNT               
+---------- ---------- ---------- --------- ---------- ---------- ---------- ---------               
+2          CHANDAN    Behala         50000 2          Behala     CHANDAN         5000               
+
+SQL> select deposit.* from deposit,borrow
+  2  union
+  3  
+SQL> select deposit.* from deposit,customer
+  2  union
+  3  select borrow.* from borrow,customer
+  4  customer.c_name=borrow.c_name and
+  5  customer.c_name=deposit.c_name and city in
+  6  (select city from customer where c_name='CHANDAN');
+customer.c_name=borrow.c_name and
+        *
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL>  select deposit.* from deposit,customer
+  2  
+SQL> select deposit.* from deposit,customer
+  2  union
+  3  select borrow.* from borrow,customer
+  4  where
+  5  customer.c_name=borrow.c_name and
+  6  customer.c_name=deposit.c_name and city in
+  7  (select city from customer where c_name='CHANDAN');
+customer.c_name=deposit.c_name and city in
+                        *
+ERROR at line 6:
+ORA-00904: invalid column name 
+
+
+SQL> select deposit.* from deposit
+  2  union
+  3  select borrow.* from borrow,customer,deposit
+  4  where
+  5  customer.c_name=borrow.c_name and
+  6  customer.c_name=deposit.c_name and city in
+  7  (select city from customer where c_name='CHANDAN');
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          Behala     CHANDAN         5000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+4          VIVEK      Navi            5000                                                          
+
+SQL> (select deposit.* from deposit,customer where
+  2   customer.c_name=borrow.c_name and
+  3  customer.c_name=deposit.c_name and city in
+  4  (select city from customer where c_name='CHANDAN'))
+  5  union
+  6  (select borrow.* from borrow,customer where
+  7  customer.c_name=borrow.c_name and
+  8  customer.c_name=deposit.c_name and city in
+  9  (select city from customer where c_name='CHANDAN'));
+ customer.c_name=borrow.c_name and
+                        *
+ERROR at line 2:
+ORA-00904: invalid column name 
+
+
+SQL> (select deposit.* from deposit,customer where
+  2  customer.c_name=deposit.c_name and city in
+  3  (select city from customer where c_name='CHANDAN'))
+  4  union
+  5  (select borrow.* from borrow,customer where
+  6  customer.c_name=borrow.c_name and city in
+  7  (select city from customer where c_name='CHANDAN'));
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          Behala     CHANDAN         5000                                                          
+2          CHANDAN    Behala         50000                                                          
+
+SQL> (select deposit.* from deposit,customer where
+  2  customer.c_name=deposit.c_name and city in
+  3  (select city from customer where c_name='CHANDAN'))
+  4  union all
+  5   (select borrow.* from borrow,customer where
+  6  customer.c_name=borrow.c_name and city in
+  7  (select city from customer where c_name='CHANDAN'));
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+2          Behala     CHANDAN         5000                                                          
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+4          VIVEK      Navi            5000                                                          
+
+SQL> select * from borrow;
+
+LOAN_NO    B_NAME     C_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          Navi       MILIND          2000                                                          
+2          Behala     CHANDAN         5000                                                          
+
+SQL> select count(deposit.c_name) from deposit,borrow where deposit.c_name=borrow.c_name;
+
+COUNT(DEPOSIT.C_NAME)                                                                               
+---------------------                                                                               
+                    2                                                                               
+
+SQL> select borrow.c_name from borrow where amount > amount in
+  2  (select amount from borrow where c_name='MILIND');
+select borrow.c_name from borrow where amount > amount in
+                                                       *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select borrow.c_name from borrow where borrow.amount> amount in
+  2  (select amount from borrow where c_name='MILIND');
+select borrow.c_name from borrow where borrow.amount> amount in
+                                                             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select borrow.c_name from borrow where borrow.amount> amo in
+  2  (select amount as amo from borrow where c_name='MILIND');
+select borrow.c_name from borrow where borrow.amount> amo in
+                                                          *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select borrow.c_name from borrow where borrow.amount> amo in
+  2  (select amount amo from borrow where c_name='MILIND');
+select borrow.c_name from borrow where borrow.amount> amo in
+                                                          *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select b.c_name from borrow b  where b.amount > amount in
+  2  (select amount from borrow where c_name='MILIND');
+select b.c_name from borrow b  where b.amount > amount in
+                                                       *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL>  select b.c_name from borrow b where b.amount in
+  2  (select amount from borrow where c_name='MILIND');
+
+C_NAME                                                                                              
+----------                                                                                          
+MILIND                                                                                              
+
+SQL> select c_name from borrow where sum(amount) >
+  2  (select sum(amount) from borrow group by c_name)
+  3  group by c_name;
+select c_name from borrow where sum(amount) >
+                                *
+ERROR at line 1:
+ORA-00934: group function is not allowed here 
+
+
+SQL> select c_name from borrow group by c_name having sum(amount) >
+  2  (select sum(amount) from borrow group by c_name);
+(select sum(amount) from borrow group by c_name)
+ *
+ERROR at line 2:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> select sum(amount) from borrow group by c_name;
+
+SUM(AMOUNT)                                                                                         
+-----------                                                                                         
+       5000                                                                                         
+       2000                                                                                         
+
+SQL> select c_name from borrow group by c_name having sum(amount) >
+  2  (select sum(amount) from borrow where c_name='MILIND' group by c_name);
+
+C_NAME                                                                                              
+----------                                                                                          
+CHANDAN                                                                                             
+
+SQL> 
+SQL> select c_name from deposit,branch,customer where deposit.c_name=customer.cname
+  2  
+SQL> select c_name from deposit,branch,customer where deposit.c_name=custom

@@ -1,0 +1,708 @@
+SQL> declare
+  2  a number(3) := 100;
+  3  begin
+  4  dbms_output.put_line('Exact value of a is: '|| a );
+  5  end
+  6  ;
+  7  
+  8  
+  9  
+ 10  
+SQL> declare
+  2  a number(3) := 100;
+  3  begin
+  4  dbms_output.put_line('Exact value of a is: '|| a );
+  5  end;
+  6  
+  7  
+  8  
+  9  
+ 10  
+ 11  
+ 12  
+ 13  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> declare
+  2  a number(3) := 100;
+  3  begin
+  4  dbms_output.put_line('Exact value of a is: '|| a );
+  5  end;
+  6  /
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2  a
+  3  /
+declare
+*
+ERROR at line 1:
+ORA-06550: line 3, column 0: 
+PLS-00103: Encountered the symbol "end-of-file" when expecting one of the following: 
+constant exception <an identifier> 
+<a double-quoted delimited-identifier> table LONG_ double ref 
+char time timestamp interval binary national character nchar 
+
+
+SQL> set serveroutput on;
+SQL> declare
+  2  a number(3) := 100;
+  3  begin
+  4  dbms_output.put_line('Exact value of a is: '|| a );
+  5  end;
+  6  /
+Exact value of a is: 100                                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2  a number(3) := 100;
+  3  begin
+  4  dbms_output.put_line('Exact value of a is: '|| a );
+  5  end;
+  6  /
+Exact value of a is: 100                                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   year number;
+  3  begin
+  4   dbms_output.put_line('Enter a number: ');
+  5   year:='&year';
+  6   if(mod(year,100)
+  7     if(mod(year,400))
+  8       dbms_output.put_line('Year is leap.');
+  9     else
+ 10       dbms_output.put_line('Year is not leap.');
+ 11     end if;
+ 12   elsif(
+ 13  /
+Enter value for year: 
+old   5:  year:='&year';
+new   5:  year:='';
+   if(mod(year,400))
+   *
+ERROR at line 7:
+ORA-06550: line 7, column 4: 
+PLS-00103: Encountered the symbol "IF" when expecting one of the following: 
+. ( ) , * % & | = - + < / > in mod not range rem => .. 
+an exponent (**) <> or != or ~= >= <= <> and or like between 
+is null is not || is dangling 
+
+
+SQL> declare
+  2   year number;
+  3  begin
+  4   dbms_output.put_line('Enter a number: ');
+  5   year:='&year';
+  6   if(mod(year,100)=0)
+  7     if(mod(year,400)=0)
+  8       dbms_output.put_line('Year is leap.');
+  9     else
+ 10       dbms_output.put_line('Year is not leap.');
+ 11     end if;
+ 12   elsif(mod(year,4)=0)
+ 13       dbms_output.put_line('Year is leap.');
+ 14   else
+ 15       dbms_output.put_line('Year is not leap.');
+ 16   end if;
+ 17  end;
+ 18  /
+Enter value for year: 2008
+old   5:  year:='&year';
+new   5:  year:='2008';
+   if(mod(year,400)=0)
+   *
+ERROR at line 7:
+ORA-06550: line 7, column 4: 
+PLS-00103: Encountered the symbol "IF" when expecting one of the following: 
+* & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling year DAY_ 
+The symbol "then" was substituted for "IF" to continue. 
+ORA-06550: line 8, column 6: 
+PLS-00103: Encountered the symbol "DBMS_OUTPUT" when expecting one of the following: 
+* & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling year DAY_ 
+The sym 
+ORA-06550: line 8, column 43: 
+PLS-00103: Encountered the symbol ";" when expecting one of the following: 
+. ( * % & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling 
+ORA-06550: line 13, column 6: 
+PLS-00103: Encountered the symbol "DBMS_OUTPUT" when expecting one of the following: 
+:= . ( % ; 
+The symbol ":=" was substituted for "DBMS_OUTPUT" to continue. 
+ORA-0
+
+
+SQL> declare
+  2   year number(4);
+  3  begin
+  4   dbms_output.put_line('Enter a number: ');
+  5   year:='&year';
+  6   if(mod(year,100)=0 and (mod(year,100)!=0 or mod(year,400)=0)
+  7       dbms_output.put_line('Year is leap.');
+  8   else
+  9       dbms_output.put_line('Year is not leap.');
+ 10   end if;
+ 11  end;
+ 12  /
+Enter value for year: 2004
+old   5:  year:='&year';
+new   5:  year:='2004';
+     dbms_output.put_line('Year is leap.');
+     *
+ERROR at line 7:
+ORA-06550: line 7, column 6: 
+PLS-00103: Encountered the symbol "DBMS_OUTPUT" when expecting one of the following: 
+) , * & = - + < / > in mod not rem an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling year DAY_ 
+The symbol "," was substituted for "DBMS_OUTPUT" to continue. 
+ORA-06550: line 7, column 43: 
+PLS-00103: Encountered the symbol ";" when expecting one of the following: 
+. ( ) , * % & | = - + < / > in mod not range rem => .. 
+an exponent (**) <> or != or ~= >= <= <> and or like between 
+is null is not || is dangling 
+
+
+SQL> declare
+  2  a number(3) := 100;
+  3  begin
+  4  dbms_output.put_line('Exact value of a is: ');
+  5  end;
+  6  /
+Exact value of a is:                                                                                
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   year number(4);
+  3  begin
+  4   dbms_output.put_line('Enter a number: ');
+  5   year:='&year';
+  6   if(mod(year,100)=0 and (mod(year,100)!=0 or mod(year,400)=0))
+  7       dbms_output.put_line('Year is leap.');
+  8   else
+  9       dbms_output.put_line('Year is not leap.');
+ 10   end if;
+ 11  end;
+ 12  /
+Enter value for year: 2004
+old   5:  year:='&year';
+new   5:  year:='2004';
+     dbms_output.put_line('Year is leap.');
+     *
+ERROR at line 7:
+ORA-06550: line 7, column 6: 
+PLS-00103: Encountered the symbol "DBMS_OUTPUT" when expecting one of the following: 
+* & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling year DAY_ 
+The symbol "*" was substituted for "DBMS_OUTPUT" to continue. 
+ORA-06550: line 7, column 43: 
+PLS-00103: Encountered the symbol ";" when expecting one of the following: 
+. ( * % & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling 
+
+
+SQL> declare
+  2   year number(4);
+  3  begin
+  4   dbms_output.put_line('Enter a number: ');
+  5   year:=&year;
+  6   if(mod(year,100)=0 and (mod(year,100)!=0 or mod(year,400)=0)) then
+  7       dbms_output.put_line('Year is leap.');
+  8   else
+  9       dbms_output.put_line('Year is not leap.');
+ 10   end if;
+ 11  end;
+ 12  /
+Enter value for year: 2004
+old   5:  year:=&year;
+new   5:  year:=2004;
+Enter a number:                                                                                     
+Year is not leap.                                                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   year number(4);
+  3  begin
+  4   dbms_output.put_line('Enter a number: ');
+  5   year:=&year;
+  6   if(mod(year,4)=0 and (mod(year,100)!=0 or mod(year,400)=0)) then
+  7       dbms_output.put_line('Year is leap.');
+  8   else
+  9       dbms_output.put_line('Year is not leap.');
+ 10   end if;
+ 11  end;
+ 12  /
+Enter value for year: 2004
+old   5:  year:=&year;
+new   5:  year:=2004;
+Enter a number:                                                                                     
+Year is leap.                                                                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   year number(4);
+  3  begin
+  4   year:=&year;
+  5   if(mod(year,4)=0 and (mod(year,100)!=0 or mod(year,400)=0)) then
+  6       dbms_output.put_line('Year is leap.');
+  7   else
+  8       dbms_output.put_line('Year is not leap.');
+  9   end if;
+ 10  end;
+ 11  /
+Enter value for year: 2005
+old   4:  year:=&year;
+new   4:  year:=2005;
+Year is not leap.                                                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   year number(4);
+  3  begin
+  4   year:=&year;
+  5   if(mod(year,4)=0 and (mod(year,100)!=0 or mod(year,400)=0)) then
+  6       dbms_output.put_line('Year is leap.');
+  7   else
+  8       dbms_output.put_line('Year is not leap.');
+  9   end if;
+ 10  end;
+ 11  /
+Enter value for year: 2000
+old   4:  year:=&year;
+new   4:  year:=2000;
+Year is leap.                                                                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   year number(4);
+  3  begin
+  4   year:=&year;
+  5   if(mod(year,4)=0 and (mod(year,100)!=0 or mod(year,400)=0)) then
+  6       dbms_output.put_line('Year is leap.');
+  7   else
+  8       dbms_output.put_line('Year is not leap.');
+  9   end if;
+ 10  end;
+ 11  /
+Enter value for year: 1900
+old   4:  year:=&year;
+new   4:  year:=1900;
+Year is not leap.                                                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9   while (temp>0) loop
+ 10    temp2:=(temp2*10) + mod(temp,10);
+ 11    temp:=temp/10;
+ 12   end loop;
+ 13   if (num=temp2)
+ 14     dbms_output.put_line('Number is palindrome.');
+ 15   else
+ 16     dbms_output.put_line('Number is not palindrome.');
+ 17   end if;
+ 18  end;
+ 19  /
+Enter value for num: 232
+old   6:  num=&num;
+new   6:  num=232;
+ num=232;
+    *
+ERROR at line 6:
+ORA-06550: line 6, column 5: 
+PLS-00103: Encountered the symbol "=" when expecting one of the following: 
+:= . ( @ % ; 
+The symbol ":= was inserted before "=" to continue. 
+ORA-06550: line 14, column 4: 
+PLS-00103: Encountered the symbol "DBMS_OUTPUT" when expecting one of the following: 
+* & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling year DAY_ 
+The sy 
+ORA-06550: line 14, column 49: 
+PLS-00103: Encountered the symbol ";" when expecting one of the following: 
+. ( * % & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling 
+
+
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9   while (temp>0) loop
+ 10    temp2:=(temp2*10) + mod(temp,10);
+ 11    temp:=temp/10;
+ 12   end loop;
+ 13   if (num=temp2)
+ 14     dbms_output.put_line('Number is palindrome.');
+ 15   else
+ 16     dbms_output.put_line('Number is not palindrome.');
+ 17   end if;
+ 18  end;
+ 19  /
+Enter value for num: 323
+old   6:  num:=&num;
+new   6:  num:=323;
+   dbms_output.put_line('Number is palindrome.');
+   *
+ERROR at line 14:
+ORA-06550: line 14, column 4: 
+PLS-00103: Encountered the symbol "DBMS_OUTPUT" when expecting one of the following: 
+* & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling year DAY_ 
+The symbol "*" was substituted for "DBMS_OUTPUT" to continue. 
+ORA-06550: line 14, column 49: 
+PLS-00103: Encountered the symbol ";" when expecting one of the following: 
+. ( * % & = - + < / > in mod not rem then an exponent (**) 
+<> or != or ~= >= <= <> and or like between is null is not || 
+is dangling 
+
+
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9   while (temp>0) loop
+ 10    temp2:=(temp2*10) + mod(temp,10);
+ 11    temp:=temp/10;
+ 12   end loop;
+ 13   if (num=temp2) then
+ 14     dbms_output.put_line('Number is palindrome.');
+ 15   else
+ 16     dbms_output.put_line('Number is not palindrome.');
+ 17   end if;
+ 18  end;
+ 19  /
+Enter value for num: 232
+old   6:  num:=&num;
+new   6:  num:=232;
+Number is not palindrome.                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9   while (temp>0) loop
+ 10    temp2:=(temp2*10) + mod(temp,10);
+ 11    temp:=temp/10;
+ 12   end loop;
+ 13   dbms_output.put_line(temp2);
+ 14   if (num=temp2) then
+ 15     dbms_output.put_line('Number is palindrome.');
+ 16   else
+ 17     dbms_output.put_line('Number is not palindrome.');
+ 18   end if;
+ 19  end;
+ 20  /
+Enter value for num: 232
+old   6:  num:=&num;
+new   6:  num:=232;
+~                                                                                                   
+Number is not palindrome.                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9   while (temp>0) loop
+ 10    temp2:=(temp2*10) + mod(temp,10);
+ 11    temp:=temp/10;
+ 12   end loop;
+ 13   dbms_output.put_line('Number:'|temp2);
+ 14   if (num=temp2) then
+ 15     dbms_output.put_line('Number is palindrome.');
+ 16   else
+ 17     dbms_output.put_line('Number is not palindrome.');
+ 18   end if;
+ 19  end;
+ 20  /
+Enter value for num: 232
+old   6:  num:=&num;
+new   6:  num:=232;
+ dbms_output.put_line('Number:'|temp2);
+                                     *
+ERROR at line 13:
+ORA-06550: line 13, column 38: 
+PLS-00103: Encountered the symbol ")" when expecting one of the following: 
+. ( * @ % & | - + / mod range rem => .. an exponent (**) || 
+
+
+SQL> 
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9   while (temp>0) loop
+ 10    temp2:=(temp2*10) + mod(temp,10);
+ 11    temp:=temp/10;
+ 12   end loop;
+ 13   dbms_output.put_line('Number:'||temp2);
+ 14   if (num=temp2) then
+ 15     dbms_output.put_line('Number is palindrome.');
+ 16   else
+ 17     dbms_output.put_line('Number is not palindrome.');
+ 18   end if;
+ 19  end;
+ 20  /
+Enter value for num: 232
+old   6:  num:=&num;
+new   6:  num:=232;
+Number:~                                                                                            
+Number is not palindrome.                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9  dbms_output.put_line('Number:'||temp2);
+ 10   while (temp>0) loop
+ 11    temp2:=(temp2*10) + mod(temp,10);
+ 12    temp:=temp/10;
+ 13   end loop;
+ 14   dbms_output.put_line('Number:'||temp2);
+ 15   if (num=temp2) then
+ 16     dbms_output.put_line('Number is palindrome.');
+ 17   else
+ 18     dbms_output.put_line('Number is not palindrome.');
+ 19   end if;
+ 20  end;
+ 21  /
+Enter value for num: 232
+old   6:  num:=&num;
+new   6:  num:=232;
+Number:0                                                                                            
+Number:~                                                                                            
+Number is not palindrome.                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9  dbms_output.put_line('Number:'||temp2);
+ 10   while (temp>0) loop
+ 11    temp2:=(temp2*10) + mod(temp,10);
+ 12    temp:=temp/10;
+ 13    dbms_output.put_line('Number:'||temp2);
+ 14   end loop;
+ 15  
+ 16   if (num=temp2) then
+ 17     dbms_output.put_line('Number is palindrome.');
+ 18   else
+ 19     dbms_output.put_line('Number is not palindrome.');
+ 20   end if;
+ 21  end;
+ 22  /
+Enter value for num: 232
+old   6:  num:=&num;
+new   6:  num:=232;
+Number:0                                                                                            
+Number:2                                                                                            
+Number:23.2                                                                                         
+Number:234.32                                                                                       
+Number:2343.432                                                                                     
+Number:23434.3432                                                                                   
+Number:234343.43432                                                                                 
+Number:2343434.343432                                                                               
+Number:23434343.4343432                                                                             
+Number:234343434.34343432                                                                           
+Number:2343434343.434343432                                                                         
+Number:23434343434.3434343432                                                                       
+Number:234343434343.43434343432                                                                     
+Number:2343434343434.343434343432                                                                   
+Number:23434343434343.4343434343432                                                                 
+Number:234343434343434.34343434343432                                                               
+Number:2343434343434343.434343434343432                                                             
+Number:23434343434343434.3434343434343432                                                           
+Number:234343434343434343.43434343434343432                                                         
+Number:2343434343434343434.343434343434343432                                                       
+Number:23434343434343434343.4343434343434343432                                                     
+Number:234343434343434343434.343434343434343434                                                     
+Number:2343434343434343434343.43434343434343434                                                     
+Number:23434343434343434343434.3434343434343434                                                     
+Number:234343434343434343434343.434343434343434                                                     
+Number:2343434343434343434343434.34343434343434                                                     
+Number:23434343434343434343434343.4343434343434                                                     
+Number:234343434343434343434343434.343434343434                                                     
+Number:2343434343434343434343434343.43434343434                                                     
+Number:23434343434343434343434343434.3434343434                                                     
+Number:234343434343434343434343434343.434343434                                                     
+Number:2343434343434343434343434343434.34343434                                                     
+Number:23434343434343434343434343434343.4343434                                                     
+Number:234343434343434343434343434343434.343434                                                     
+Number:2343434343434343434343434343434343.43434                                                     
+Number:23434343434343434343434343434343434.3434                                                     
+Number:234343434343434343434343434343434343.434                                                     
+Number:2343434343434343434343434343434343434.34                                                     
+Number:23434343434343434343434343434343434343.4                                                     
+Number:234343434343434343434343434343434343434                                                      
+Number:2343434343434343434343434343434343434340                                                     
+Number:23434343434343434343434343434343434343400                                                    
+Number:234343434343434343434343434343434343434000                                                   
+Number:2343434343434343434343434343434343434340000                                                  
+Number:23434343434343434343434343434343434343400000                                                 
+Number:234343434343434343434343434343434343434000000                                                
+declare
+*
+ERROR at line 1:
+ORA-20000: ORU-10027: buffer overflow, limit of 2000 bytes 
+ORA-06512: at "SYS.DBMS_OUTPUT", line 106 
+ORA-06512: at "SYS.DBMS_OUTPUT", line 65 
+ORA-06512: at line 13 
+
+
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9  dbms_output.put_line('Number:'||temp2);
+ 10   while (temp>0) loop
+ 11    temp2:=(temp2*10) + mod(temp,10);
+ 12    temp:=floor(temp/10);
+ 13    dbms_output.put_line('Number:'||temp2);
+ 14   end loop;
+ 15  
+ 16   if (num=temp2) then
+ 17     dbms_output.put_line('Number is palindrome.');
+ 18   else
+ 19     dbms_output.put_line('Number is not palindrome.');
+ 20   end if;
+ 21  end;
+ 22  /
+Enter value for num: 232
+old   6:  num:=&num;
+new   6:  num:=232;
+Number:0                                                                                            
+Number:2                                                                                            
+Number:23                                                                                           
+Number:232                                                                                          
+Number is palindrome.                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9   while (temp>0) loop
+ 10    temp2:=(temp2*10) + mod(temp,10);
+ 11    temp:=floor(temp/10);
+ 12   end loop;
+ 13  
+ 14   if (num=temp2) then
+ 15     dbms_output.put_line('Number is palindrome.');
+ 16   else
+ 17     dbms_output.put_line('Number is not palindrome.');
+ 18   end if;
+ 19  end;
+ 20  /
+Enter value for num: 232
+old   6:  num:=&num;
+new   6:  num:=232;
+Number is palindrome.                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2   num number;
+  3   temp number;
+  4   temp2 number;
+  5  begin
+  6   num:=&num;
+  7   temp2:=0;
+  8   temp:=num;
+  9   while (temp>0) loop
+ 10    temp2:=(temp2*10) + mod(temp,10);
+ 11    temp:=floor(temp/10);
+ 12   end loop;
+ 13  
+ 14   if (num=temp2) then
+ 15     dbms_output.put_line('Number is palindrome.');
+ 16   else
+ 17     dbms_output.put_line('Number is not palindrome.');
+ 18   end if;
+ 19  end;
+ 20  /
+Enter value for num: 233
+old   6:  num:=&num;
+new   6:  num:=233;
+Number is not palindrome.                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off;

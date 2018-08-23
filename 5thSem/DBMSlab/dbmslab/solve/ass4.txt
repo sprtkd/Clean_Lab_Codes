@@ -1,0 +1,176 @@
+1.
+
+declare
+ cid number;
+ cursor cur is select empno from emp order by sal desc;
+begin
+ open cur;
+ fetch cur into cid;
+ if cur%found then
+ 	delete from emp where empno=cid;
+ end if;
+ fetch cur into cid;
+ if cur%found then
+ 	delete from emp where empno=cid;
+ end if;
+end;
+
+2.
+
+declare
+ cid number;
+ tot number;
+ cursor cur is select empno from emp where city='Kolkata';
+begin
+ open cur;
+ tot:=cur%rowcount;
+ loop
+  fetch cur into cid;
+  exit when cur%notfound;
+   update emp
+   set sal = sal*1.15
+   where empno=cid;
+ end loop;
+ dbms_output.put_line( tot || ' employees selected '); 
+end;
+
+3.
+
+declare
+ acc_no_from number;
+ acc_no_to number;
+ amtf number;
+begin
+ acc_no_from:='&acc_no_from';
+ acc_no_to :='&acc_no_to';
+ select sum(amount) into amtf from deposit group by act_no where act_no=acc_no_from;
+ if(sql%notfound) then
+  dbms_output.put_line('Account number not found');
+  return;
+ end if;
+ if(amtf<2000) then
+  dbms_output.put_line('Balance not sufficient');
+  return;
+ end if;
+ update deposit
+ set amount=amount-2000
+ where act_no=acc_no_from;
+ update deposit
+ set amount=amount+2000
+ where act_no=acc_no_to;
+end;
+
+3.
+
+declare
+ counter number;
+ acn number;
+ cursor cur is select act_no from deposit where age>60;
+begin
+ counter:=3;
+ loop
+  fetch cur into acn;
+  exit when cur%notfound or counter<1;
+  update deposit
+  set amount=amount*105
+  where act_no=acn;
+  counter:=counter-1;
+ end loop;
+end;
+
+4.
+
+declare
+ date3 date;
+ date4 date;
+ temporder varchar2(50);
+ tempitem varchar2(50);
+ tempdate date;
+ tempqty number;
+ cursor C3 (date1 date , date2 date) IS select delv_no, item_no, delivery_dt, qty
+ from delivery_details
+ where delivery_dt < date2 and delivery_dt > date1;
+begin
+ date3 := '&start';
+ date4 := '&end';
+ open c3(date3, date4);
+ loop 
+  fetch c3 into temporder,tempitem,tempdate,tempqty;
+  dbms_output.put_line('delivery number: ' || temporder|| '; item number: '|| tempitem ||'; delivery date: '|| tempdate || '; quantity: ' ||tempqty );
+  exit when c3%notfound;
+ end loop;
+ close c3;
+end;
+
+5.
+
+declare
+ tempcode integer ;
+ tempname varchar2(20);
+ tempsal integer ;
+ tempdno smallint ;
+ tempcity varchar2(10) ;
+ temptotalsal integer;
+begin
+ tempcode := &empcode;
+ tempname:= '&name';
+ tempsal := &salary;
+ tempdno := &deptno;
+ tempcity := '&city';
+ commit;
+ insert into employee
+ values(tempcode,tempname,tempsal,tempdno,tempcity);
+ dbms_output.put_line('row inserted into the table.');
+ select sum(salary) into temptotalsal
+ from employee;
+ if temptotalsal > 20000 then
+  rollback;
+ dbms_output.put_line('the update operation was rollbacked.');
+ else
+  commit;
+ dbms_output.put_line('the update operation was commited.');
+ end if;
+end;
+
+
+
+6.
+
+declare
+ tempdno smallint;
+ totalsal integer;
+begin
+ tempdno := &departmentno;
+ select sum(salary) into totalsal
+ from employee
+ group by dno
+ where dno = tempdno;
+ if sql%found then
+	dbms_output.put_line('The total salary for the department is: ' || totalsal );
+ end if;
+ exception
+	when no_data_found then
+		dbms_output.put_line('No such deparment exists!');
+end;
+
+
+7.
+
+declare
+ temppno smallint;
+ tempcp integer;
+ tempsp integer;
+begin
+ temppno := &productno;
+ select actual_price,sale_price into tempcp,tempsp
+ from product
+ where pno = temppno;
+ if sql%found then
+	dbms_output.put_line('The profit for the product is: ' || (tempsp - tempcp) );
+ end if;
+ exception
+	when no_data_found then
+		dbms_output.put_line('No such product exists');
+end;
+
+

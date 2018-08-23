@@ -1,0 +1,32 @@
+SQL> ls
+SP2-0042: unknown command "ls" - rest of line ignored.
+SQL> update deposit set amount=amount+1000 where amount in
+  2  (select max(amount) from deposit group by b_name);
+
+3 rows updated.
+
+SQL> select * from deposit
+  2  ;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         4000                                                          
+2          CHANDAN    Behala         56000                                                          
+3          MILIND     Navi           56000                                                          
+4          VIVEK      Behala          4000                                                          
+
+SQL> update deposit set amount=amount+1000 where amount in
+  2  (select max(amount) from deposit group by b_name);
+
+4 rows updated.
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         5000                                                          
+2          CHANDAN    Behala         57000                                                          
+3          MILIND     Navi           57000                                                          
+4          VIVEK      Behala          5000                                                          
+
+SQL> spool off;

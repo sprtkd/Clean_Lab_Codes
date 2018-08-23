@@ -1,0 +1,690 @@
+SQL> select * from tab;
+
+TNAME                          TABTYPE CLUSTERID                                                    
+------------------------------ ------- ---------                                                    
+ACCOUNT                        TABLE                                                                
+BONUS                          TABLE                                                                
+CUST                           TABLE                                                                
+DEPT                           TABLE                                                                
+EMP                            TABLE                                                                
+INVOICE                        TABLE                                                                
+MOVIE                          TABLE                                                                
+RECEIPT                        TABLE                                                                
+SALGRADE                       TABLE                                                                
+STUDENT                        TABLE                                                                
+
+10 rows selected.
+
+SQL> select * from cust
+  2  ;
+
+CUS LNAME           FNAME           AR  PHONE_NO                                                    
+--- --------------- --------------- -- ---------                                                    
+1   Dey             Suprotik        Ko  22446677                                                    
+2   Sharma          Chandan         Ko  11225566                                                    
+3   Sharma          Vivek           Ba  33446677                                                    
+4   Agarwal         Milind          Ri  33665587                                                    
+5   Bhowmick        Malay           Sa  68646376                                                    
+6   Dey             Sandipan        Ko                                                              
+7                   Fafa            Ba    788768                                                    
+
+7 rows selected.
+
+SQL> sect * from invoice;
+SP2-0042: unknown command beginning "sect * fro..." - rest of line ignored.
+SQL> select
+  2  * from invoice;
+
+INV     MV_NO CUS ISSUE_DAT RETURN_DA                                                               
+--- --------- --- --------- ---------                                                               
+1           4 1   12-JUL-17 20-JUL-17                                                               
+2           3 2   13-SEP-17 13-NOV-17                                                               
+3           1 3   11-SEP-16 13-OCT-16                                                               
+4           3 5   06-MAY-16 15-JUN-17                                                               
+
+SQL> selct * from movie;
+SP2-0042: unknown command beginning "selct * fr..." - rest of line ignored.
+SQL> select * from movie;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+
+6 rows selected.
+
+SQL> desc invoice;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ INV_NO                                                         VARCHAR2(3)
+ MV_NO                                                          NUMBER(2)
+ CUST_ID                                                        VARCHAR2(3)
+ ISSUE_DATE                                                     DATE
+ RETURN_DATE                                                    DATE
+
+SQL> select mv_no from cust inner join invoice on cust.cust_id = invoice.cust_id;
+select mv_no from cust inner join invoice on cust.cust_id = invoice.cust_id
+                             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> mv_no from cust join invoice on cust.cust_id = invoice.cust_id;
+SP2-0042: unknown command beginning "mv_no from..." - rest of line ignored.
+SQL> select mv_no from cust join invoice on cust.cust_id = invoice.cust_id;
+select mv_no from cust join invoice on cust.cust_id = invoice.cust_id
+                            *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> desc cust
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ CUST_ID                                                        VARCHAR2(3)
+ LNAME                                                          VARCHAR2(15)
+ FNAME                                                          VARCHAR2(15)
+ AREA                                                           VARCHAR2(2)
+ PHONE_NO                                                       NUMBER(8)
+
+SQL> select mv_no from invoice join cust on cust.cust_id = invoice.cust_id;
+select mv_no from invoice join cust on cust.cust_id = invoice.cust_id
+                               *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select mv_no from invoice, cust where cust.cust_id = invoice.cust_id;
+
+    MV_NO                                                                                           
+---------                                                                                           
+        4                                                                                           
+        3                                                                                           
+        1                                                                                           
+        3                                                                                           
+
+SQL> /
+
+    MV_NO                                                                                           
+---------                                                                                           
+        4                                                                                           
+        3                                                                                           
+        1                                                                                           
+        3                                                                                           
+
+SQL> select mv_no from invoice, cust where cust.cust_id = invoice.cust_id and cust.fname = "Malay";
+select mv_no from invoice, cust where cust.cust_id = invoice.cust_id and cust.fname = "Malay"
+                                                                                      *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select mv_no from invoice, cust where cust.cust_id = invoice.cust_id and cust.fname like "Malay";
+select mv_no from invoice, cust where cust.cust_id = invoice.cust_id and cust.fname like "Malay"
+                                                                                         *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> cust.fname;
+SP2-0042: unknown command beginning "cust.fname..." - rest of line ignored.
+SQL> select mv_no from invoice, cust where cust.cust_id = invoice.cust_id and fname like "Malay";
+select mv_no from invoice, cust where cust.cust_id = invoice.cust_id and fname like "Malay"
+                                                                                    *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select * from cust where fname like "Malay";
+select * from cust where fname like "Malay"
+                                    *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select * from cust where fname like Malay;
+select * from cust where fname like Malay
+                                    *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select * from cust where fname like 'Malay';
+
+CUS LNAME           FNAME           AR  PHONE_NO                                                    
+--- --------------- --------------- -- ---------                                                    
+5   Bhowmick        Malay           Sa  68646376                                                    
+
+SQL> select mv_no from invoice, cust where cust.cust_id = invoice.cust_id and fname like 'Malay';
+
+    MV_NO                                                                                           
+---------                                                                                           
+        3                                                                                           
+
+SQL> select * from invoice;
+
+INV     MV_NO CUS ISSUE_DAT RETURN_DA                                                               
+--- --------- --- --------- ---------                                                               
+1           4 1   12-JUL-17 20-JUL-17                                                               
+2           3 2   13-SEP-17 13-NOV-17                                                               
+3           1 3   11-SEP-16 13-OCT-16                                                               
+4           3 5   06-MAY-16 15-JUN-17                                                               
+
+SQL> select mv_no, fname, lname from invoice, cust where cust.cust_id = invoice.cust_id group by invoice.mv_no;
+select mv_no, fname, lname from invoice, cust where cust.cust_id = invoice.cust_id group by invoice.mv_no
+              *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> select invoice.mv_no, cust.fname, cust.lname from invoice, cust where cust.cust_id = invoice.cust_id group by invoice.mv_no;
+select invoice.mv_no, cust.fname, cust.lname from invoice, cust where cust.cust_id = invoice.cust_id group by invoice.mv_no
+                      *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> select invoice.mv_no, cust.fname, cust.lname from invoice, cust where cust.cust_id = invoice.cust_id;
+
+    MV_NO FNAME           LNAME                                                                     
+--------- --------------- ---------------                                                           
+        4 Suprotik        Dey                                                                       
+        3 Chandan         Sharma                                                                    
+        1 Vivek           Sharma                                                                    
+        3 Malay           Bhowmick                                                                  
+
+SQL> select invoice.mv_no, cust.fname, cust.lname from invoice, cust where cust.cust_id = invoice.cu;
+select invoice.mv_no, cust.fname, cust.lname from invoice, cust where cust.cust_id = invoice.cu
+                                                                                             *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> desc movie;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ MV_NO                                                          NUMBER(2)
+ TITLE                                                          VARCHAR2(25)
+ TYPE                                                           VARCHAR2(10)
+ STAR                                                           VARCHAR2(25)
+ PRICE                                                          NUMBER(8,2)
+
+SQL> select movie.title, invoice.cust_id, invoice.mv_no from invoice, movie where invoice.mv_no = movie.mv_no;
+
+TITLE                     CUS     MV_NO                                                             
+------------------------- --- ---------                                                             
+Despicable Me 3           3           1                                                             
+Dr. Strange               2           3                                                             
+Dr. Strange               5           3                                                             
+Tintorettor Jishu         1           4                                                             
+
+SQL> select * from movie;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+
+6 rows selected.
+
+SQL> select movie.title, movie.type from movie, invoice, cust where cust.fname like 'Malay' and invoice.mv_no = movie.mv_no;
+
+TITLE                     TYPE                                                                      
+------------------------- ----------                                                                
+Despicable Me 3           Animation                                                                 
+Dr. Strange               Comic                                                                     
+Dr. Strange               Comic                                                                     
+Tintorettor Jishu         Mystery                                                                   
+
+SQL> select movie.title, movie.type from movie, invoice, cust where invoice.mv_no = movie.mv_no and cust.fname like 'Malay';
+
+TITLE                     TYPE                                                                      
+------------------------- ----------                                                                
+Despicable Me 3           Animation                                                                 
+Dr. Strange               Comic                                                                     
+Dr. Strange               Comic                                                                     
+Tintorettor Jishu         Mystery                                                                   
+
+SQL> select movie.title, movie.type from movie, invoice, cust where invoice.mv_no = movie.mv_no andc;
+select movie.title, movie.type from movie, invoice, cust where invoice.mv_no = movie.mv_no andc
+                                                                                           *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select movie.title, movie.type from movie, invoice, cust where invoice.mv_no = movie.mv_no and
+  2  cust.fname like 'Malay' and cust.cust_id = invoice.cust_id;
+
+TITLE                     TYPE                                                                      
+------------------------- ----------                                                                
+Dr. Strange               Comic                                                                     
+
+SQL> select movie.title, movie.type from movie, invoice, cust where invoice.mv_no = movie.mv_no and
+  2  cust.fname like
+  3  'Chandan'
+  4  and cust.cust_id = invoice.cust_id;
+
+TITLE                     TYPE                                                                      
+------------------------- ----------                                                                
+Dr. Strange               Comic                                                                     
+
+SQL> select movie.title, movie.type from movie, invoice, cust where invoice.mv_no = movie.mv_no and
+  2  cust.fname like
+  3  'Vivek'
+  4  and cust.cust_id = invoice.cust_id;
+
+TITLE                     TYPE                                                                      
+------------------------- ----------                                                                
+Despicable Me 3           Animation                                                                 
+
+SQL> select cust.fname, cust.lname from movie, cust, invoice where invoice.mv_no = movie.mv_no and
+  2  and cust.cust_id = invoice.cust_id
+  3  and movie.type like 'Comic';
+and cust.cust_id = invoice.cust_id
+*
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> select cust.fname, cust.lname from movie, cust, invoice where invoice.mv_no = movie.mv_no
+  2  and cust.cust_id = invoice.cust_id
+  3  and movie.type like 'Comic';
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Chandan         Sharma                                                                              
+Malay           Bhowmick                                                                            
+
+SQL> select 'The movie taken by '||cust.fname||' '||cust.lname||' is '||movie.title from  movie, cust, invoice where invoice.mv_no = movie.mv_no
+  2  and cust.cust_id = invoice.cust_id
+  3  ;
+
+'THEMOVIETAKENBY'||CUST.FNAME||''||CUST.LNAME||'IS'||MOVIE.TITLE                                    
+-------------------------------------------------------------------------------                     
+The movie taken by Vivek Sharma is Despicable Me 3                                                  
+The movie taken by Chandan Sharma is Dr. Strange                                                    
+The movie taken by Malay Bhowmick is Dr. Strange                                                    
+The movie taken by Suprotik Dey is Tintorettor Jishu                                                
+
+SQL> select 'The movie taken by '||cust.fname||' '||cust.lname||' is '||movie.title from  movie, cust, invoice where invoice.mv_no = movie.mv_no
+  2  and cust.cust_id = invoice.cust_id
+  3  and invoice.mv_no >= 3;
+
+'THEMOVIETAKENBY'||CUST.FNAME||''||CUST.LNAME||'IS'||MOVIE.TITLE                                    
+-------------------------------------------------------------------------------                     
+The movie taken by Chandan Sharma is Dr. Strange                                                    
+The movie taken by Malay Bhowmick is Dr. Strange                                                    
+The movie taken by Suprotik Dey is Tintorettor Jishu                                                
+
+SQL> select fname,lname from cust, invoice where cust.cust_id = invoice.cust_id and invoice.mv_no in
+  2  (select mv_no from invoice, movie where invoice.mv_no = movie.mv_no);
+(select mv_no from invoice, movie where invoice.mv_no = movie.mv_no)
+        *
+ERROR at line 2:
+ORA-00918: column ambiguously defined 
+
+
+SQL>  select fname,lname from cust, invoice where cust.cust_id = invoice.cust_id and invoice.mv_no in
+  2  (select invoice.mv_no from invoice, movie where invoice.mv_no = movie.mv_no);
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Vivek           Sharma                                                                              
+Chandan         Sharma                                                                              
+Malay           Bhowmick                                                                            
+Suprotik        Dey                                                                                 
+
+SQL> desc invoice
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ INV_NO                                                         VARCHAR2(3)
+ MV_NO                                                          NUMBER(2)
+ CUST_ID                                                        VARCHAR2(3)
+ ISSUE_DATE                                                     DATE
+ RETURN_DATE                                                    DATE
+
+SQL> select fname,lname from cust where cust_id in
+  2  (select cust_id, inv_no from invoice where inv_;
+(select cust_id, inv_no from invoice where inv_
+                                              *
+ERROR at line 2:
+ORA-00920: invalid relational operator 
+
+
+SQL>  select fname,lname, area from cust where cust_id in
+  2  (select cust_id from invoice where inv_no like 3);
+
+FNAME           LNAME           AR                                                                  
+--------------- --------------- --                                                                  
+Vivek           Sharma          Ba                                                                  
+
+SQL> select fname,lname from cust, invoice where cust.cust_id = invoice.cust_id and invoice.mv_no in
+  2  (select invoice.mv_no from invoice, movie where invoice.mv_no = movie.mv_no and movie.mv_no = 2);
+
+no rows selected
+
+SQL> select * from movie;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+
+6 rows selected.
+
+SQL> select fname,lname from cust, invoice where cust.cust_id = invoice.cust_id and invoice.mv_no in
+  2  (select invoice.mv_no from invoice, movie where invoice.mv_no = movie.mv_no and movie.mv_no = 3);
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Chandan         Sharma                                                                              
+Malay           Bhowmick                                                                            
+
+SQL> select * from cust
+  2  ;
+
+CUS LNAME           FNAME           AR  PHONE_NO                                                    
+--- --------------- --------------- -- ---------                                                    
+1   Dey             Suprotik        Ko  22446677                                                    
+2   Sharma          Chandan         Ko  11225566                                                    
+3   Sharma          Vivek           Ba  33446677                                                    
+4   Agarwal         Milind          Ri  33665587                                                    
+5   Bhowmick        Malay           Sa  68646376                                                    
+6   Dey             Sandipan        Ko                                                              
+7                   Fafa            Ba    788768                                                    
+
+7 rows selected.
+
+SQL> select fname,lname, phone_no from cust where cust_id in
+  2  (select cust_id from invoice where issue_date like '__-AUG-__';
+(select cust_id from invoice where issue_date like '__-AUG-__'
+                                                             *
+ERROR at line 2:
+ORA-00907: missing right parenthesis 
+
+
+SQL>  select fname,lname, phone_no from cust where cust_id in
+  2  (select cust_id from invoice where issue_date like '__-AUG-__');
+
+no rows selected
+
+SQL> select fname,lname, phone_no from cust where cust_id in
+  2  (select cust_id from invoice where extract(month from issue_date) < 8);
+
+FNAME           LNAME            PHONE_NO                                                           
+--------------- --------------- ---------                                                           
+Suprotik        Dey              22446677                                                           
+Malay           Bhowmick         68646376                                                           
+
+SQL> select * from movie;
+
+    MV_NO TITLE                     TYPE       STAR                          PRICE                  
+--------- ------------------------- ---------- ------------------------- ---------                  
+        1 Despicable Me 3           Animation  Gru&Dru                         120                  
+        2 Spiderman: Homecoming     Comic      Tom Holland                     100                  
+        3 Dr. Strange               Comic      Benedict Cumberbatch             80                  
+        4 Tintorettor Jishu         Mystery    Sabyasachi Chakroborty          110                  
+        5 Krishh 3                  Action     Hrithik Roshan                  110                  
+        6 Golmaal                   Comedy     Ajay Devgan                      70                  
+
+6 rows selected.
+
+SQL> select title from movie where mv_no in
+  2  (select mv_no from invoice where cust_id in
+  3  (select cust_id from cust where fname like 'Chandan' and fname like 'Vivek'));
+
+no rows selected
+
+SQL> select title from movie where mv_no in
+  2  (select mv_no from invoice where cust_id in
+  3  (select cust_id from cust where fname like 'Chandan' or fname like 'Vivek'));
+
+TITLE                                                                                               
+-------------------------                                                                           
+Despicable Me 3                                                                                     
+Dr. Strange                                                                                         
+
+SQL> select mv_no, title from movie where mv_no in
+  2  (select mv_no from invoice where cust_id in
+  3  (select cust_id from cust);
+(select cust_id from cust)
+                         *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> select mv_no, title from movie where mv_no in
+  2  (select mv_no from invoice where cust_id in
+  3  (select cust_id from cust);
+(select cust_id from cust)
+                         *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> select mv_no, title from movie where mv_no in
+  2  (select mv_no from invoice where cust_id in
+  3  (select cust_id from cust));
+
+    MV_NO TITLE                                                                                     
+--------- -------------------------                                                                 
+        1 Despicable Me 3                                                                           
+        3 Dr. Strange                                                                               
+        4 Tintorettor Jishu                                                                         
+
+SQL> select type, mv_no from movie where mv_no in
+  2  (select mv_no from invoice where cust_id = 1 or cust_id = 2);
+
+TYPE           MV_NO                                                                                
+---------- ---------                                                                                
+Comic              3                                                                                
+Mystery            4                                                                                
+
+SQL> select cust_id from invoice where mv_no in
+  2  (select mv_no from movie where star like 'Benedict Cumberbatch');
+
+CUS                                                                                                 
+---                                                                                                 
+2                                                                                                   
+5                                                                                                   
+
+SQL> select fname,lname from cust where cust_id in
+  2  (select cust_id from invoice);
+
+FNAME           LNAME                                                                               
+--------------- ---------------                                                                     
+Suprotik        Dey                                                                                 
+Chandan         Sharma                                                                              
+Vivek           Sharma                                                                              
+Malay           Bhowmick                                                                            
+
+SQL> select inv_no, issue_date from invoice;
+
+INV ISSUE_DAT                                                                                       
+--- ---------                                                                                       
+1   12-JUL-17                                                                                       
+2   13-SEP-17                                                                                       
+3   11-SEP-16                                                                                       
+4   06-MAY-16                                                                                       
+
+SQL> select datename(month, extract(month from return_date)) from invoice;
+select datename(month, extract(month from return_date)) from invoice
+       *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select inv_no, extract(day from issue_date) from invoice;
+
+INV EXTRACT(DAYFROMISSUE_DATE)                                                                      
+--- --------------------------                                                                      
+1                           12                                                                      
+2                           13                                                                      
+3                           11                                                                      
+4                            6                                                                      
+
+SQL> /
+
+INV EXTRACT(DAYFROMISSUE_DATE)                                                                      
+--- --------------------------                                                                      
+1                           12                                                                      
+2                           13                                                                      
+3                           11                                                                      
+4                            6                                                                      
+
+SQL> select to_char(return_date) from invoice;
+
+TO_CHAR(R                                                                                           
+---------                                                                                           
+20-JUL-17                                                                                           
+13-NOV-17                                                                                           
+13-OCT-16                                                                                           
+15-JUN-17                                                                                           
+
+SQL> select to_char(return_date, month) from invoice;
+select to_char(return_date, month) from invoice
+                            *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select to_char(return_date, 'month') from invoice;
+
+TO_CHAR(R                                                                                           
+---------                                                                                           
+july                                                                                                
+november                                                                                            
+october                                                                                             
+june                                                                                                
+
+SQL> select to_char(issue_date, 'dd-month-yy') from invoice;
+
+TO_CHAR(ISSUE_D                                                                                     
+---------------                                                                                     
+12-july     -17                                                                                     
+13-september-17                                                                                     
+11-september-16                                                                                     
+06-may      -16                                                                                     
+
+SQL> select sysdate from dual;
+
+SYSDATE                                                                                             
+---------                                                                                           
+22-AUG-17                                                                                           
+
+SQL> select add_date(sysdate,15) from dual;
+select add_date(sysdate,15) from dual
+       *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select dateadd(sysdate,15) from dual;
+select dateadd(sysdate,15) from dual
+       *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> dateadd(sysdate,'dd-mon-yy',15,0,0);
+SP2-0042: unknown command beginning "dateadd(sy..." - rest of line ignored.
+SQL> select dateadd(sysdate,'dd-mon-yy',15,0,0) from dual;
+select dateadd(sysdate,'dd-mon-yy',15,0,0) from dual
+       *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> select sysdate+15 from dual;
+
+SYSDATE+1                                                                                           
+---------                                                                                           
+06-SEP-17                                                                                           
+
+SQL> select sysdate-return_date from invoice;
+
+SYSDATE-RETURN_DATE                                                                                 
+-------------------                                                                                 
+           33.48765                                                                                 
+          -82.51235                                                                                 
+          313.48765                                                                                 
+           68.48765                                                                                 
+
+SQL> select * from invoice;
+
+INV     MV_NO CUS ISSUE_DAT RETURN_DA                                                               
+--- --------- --- --------- ---------                                                               
+1           4 1   12-JUL-17 20-JUL-17                                                               
+2           3 2   13-SEP-17 13-NOV-17                                                               
+3           1 3   11-SEP-16 13-OCT-16                                                               
+4           3 5   06-MAY-16 15-JUN-17                                                               
+
+SQL> update student phone_no = 466389 where fname like 'Vivek';
+update student phone_no = 466389 where fname like 'Vivek'
+                        *
+ERROR at line 1:
+ORA-00971: missing SET keyword 
+
+
+SQL> update student set phone_no = 466389 where fname like 'Vivek';
+update student set phone_no = 466389 where fname like 'Vivek'
+                                           *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL> update student set phone_no = 466389 from cust where fname like 'Vivek';
+update student set phone_no = 466389 from cust where fname like 'Vivek'
+                                     *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> update cust set phone_no = 466389 where fname like 'Vivek';
+
+1 row updated.
+
+SQL> update invoice set issue_date = 24-JUL-93 where cust_id  =1;
+update invoice set issue_date = 24-JUL-93 where cust_id  =1
+                                   *
+ERROR at line 1:
+ORA-00904: invalid column name 
+
+
+SQL>  update invoice set issue_date = '24-JUL-93'where cust_id  =1;
+
+1 row updated.
+
+SQL> update movie set price = 250 where title like 'Dr. Strange';
+
+1 row updated.
+
+SQL> delete from invoice where inv_no = 2;
+
+1 row deleted.
+
+SQL> update cust set area = 'vs' where cust_id = 2;
+
+1 row updated.
+
+SQL> update invoice set return_date = '16-AUG-93' where inv_no = 4;
+
+1 row updated.
+
+SQL> delete from invoice where return_date < '10-JUL-17';
+
+1 row deleted.
+
+SQL> spool off;

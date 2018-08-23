@@ -1,0 +1,23 @@
+1.
+
+declare
+ date3 date;
+ date4 date;
+ temporder varchar2(50);
+ tempitem varchar2(50);
+ tempdate date;
+ tempqty number;
+ cursor C3 (date1 date , date2 date) IS select delv_no, item_no, delivery_dt, qty
+ from delivery_details
+ where delivery_dt < date2 and delivery_dt > date1;
+begin
+ date3 := '&start';
+ date4 := '&end';
+ open c3(date3, date4);
+ loop 
+  fetch c3 into temporder,tempitem,tempdate,tempqty;
+  dbms_output.put_line('delivery number: ' || temporder|| '; item number: '|| tempitem ||'; delivery date: '|| tempdate || '; quantity: ' ||tempqty );
+  exit when c3%notfound;
+ end loop;
+ close c3;
+end;

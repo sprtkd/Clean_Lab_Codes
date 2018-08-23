@@ -1,0 +1,218 @@
+1.
+
+declare
+ year number(4);
+begin
+ year:=&year;
+ if(mod(year,4)=0 and (mod(year,100)!=0 or mod(year,400)=0)) then
+     dbms_output.put_line('Year is leap.');
+ else
+     dbms_output.put_line('Year is not leap.');
+ end if;
+end;
+/
+
+2.
+
+declare
+ num number;
+ temp number;
+ temp2 number;
+begin
+ num:=&num;
+ temp2:=0;
+ temp:=num;
+ while (temp>0) loop
+  temp2:=(temp2*10) + mod(temp,10);
+  temp:=floor(temp/10);
+ end loop;
+ 
+ if (num=temp2) then
+   dbms_output.put_line('Number is palindrome.');
+ else
+   dbms_output.put_line('Number is not palindrome.');
+ end if;
+end;
+/
+
+3.
+
+
+declare
+ num number;
+ sumnum number;
+ num2 number;
+ dig number;
+begin
+ num:=&num;
+ num2:=num;
+ sumnum:=0;
+ while (num2>0) loop
+  dig:=mod(num2,10);
+  sumnum:=sumnum+(dig*dig*dig);
+  num2:=floor(num2/10);
+ end loop;
+ 
+ if (num=sumnum) then
+   dbms_output.put_line('Number is Armstrong.');
+ else
+   dbms_output.put_line('Number is not Armstrong.');
+ end if;
+end;
+/
+
+4.
+
+declare
+ num1 number;
+ num2 number;
+ num3 number;
+ dividend number;
+ divisor number;
+ remainder number;
+begin
+ num1:='&num1';
+ num2:='&num2';
+ num3:='&num3';
+ if (num1>num2) then
+  dividend:=num1;
+  divisor:=num2;
+ else
+  dividend:=num2;
+  divisor:=num1;
+ end if;
+ 
+ while (mod(dividend,divisor)!=0) loop
+  remainder:=mod(dividend,divisor);
+  dividend:=divisor;
+  divisor:=remainder;
+  
+ end loop;
+ if (num3>divisor) then
+  dividend:=num3;
+  divisor:=divisor;
+ else
+  dividend:=divisor;
+  divisor:=num3;
+ end if;
+ 
+ while (mod(dividend,divisor)!=0) loop
+  remainder:=mod(dividend,divisor);
+  dividend:=divisor;
+  divisor:=remainder;
+  
+ end loop;
+
+ dbms_output.put_line('G.C.D. is '||divisor);
+end;
+
+5.
+
+
+declare
+ num1 number;
+ num2 number;
+ num3 number;
+ dividend number;
+ divisor number;
+ remainder number;
+ lcm number;
+begin
+ num1:='&num1';
+ num2:='&num2';
+ num3:='&num3';
+ if (num1>num2) then
+  dividend:=num1;
+  divisor:=num2;
+ else
+  dividend:=num2;
+  divisor:=num1;
+ end if;
+ 
+ while (mod(dividend,divisor)!=0) loop
+  remainder:=mod(dividend,divisor);
+  dividend:=divisor;
+  divisor:=remainder;
+  
+ end loop;
+ lcm:=(num1*num2)/divisor;
+ if (num3>lcm) then
+  dividend:=num3;
+  divisor:=lcm;
+ else
+  dividend:=lcm;
+  divisor:=num3;
+ end if;
+ 
+ while (mod(dividend,divisor)!=0) loop
+  remainder:=mod(dividend,divisor);
+  dividend:=divisor;
+  divisor:=remainder;
+  
+ end loop;
+ lcm:=(lcm*num3)/divisor;
+
+ dbms_output.put_line('L.C.M. is '||lcm);
+end;
+
+6.
+
+declare
+ num number;
+ sumnum number;
+ iter number;
+begin
+ num:='&num';
+ sumnum:=0;
+ iter:=1;
+ while (iter<=(num/2)) loop
+  if (mod(num,iter)=0) then
+   sumnum:=sumnum+iter;
+  end if;
+   iter:=iter + 1;
+ end loop;
+ if(num=sumnum) then
+  dbms_output.put_line('It is a perfect number.');
+ else
+  dbms_output.put_line('It is not a perfect number.');
+ end if;
+end;
+
+7.
+
+declare
+ str1 varchar2(300);
+ vcount number;
+ ccount number;
+ iter number;
+ c1 char;
+begin
+ str1:='&str1';
+ vcount:=0;
+ ccount:=0;
+ for iter in 1..length(str1) loop
+  c1:=substr(str1,iter,1);
+  if(c1 in ('A','E','I','O','U','a','e','i','o','u')) then
+   vcount:=vcount+1;
+  else
+   ccount:=ccount+1;
+  end if;
+ end loop;
+ dbms_output.put_line('Vowels: '||vcount||'. Consonants: '||ccount||' .');
+end;
+
+8.
+declare
+ acc_no number;
+ amt number;
+begin
+ acc_no:='&acc_no';
+ select amount into amt from deposit where act_no=acc_no;
+ if(amt<7000) then
+  amt:=amt+2000;
+  update deposit set amount=amt where act_no=acc_no;
+  dbms_output.put_line('Amount updated');
+ else
+  dbms_output.put_line('Amount not updated');
+ end if;
+end;

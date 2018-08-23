@@ -1,0 +1,209 @@
+SQL> select deposit.c_name from deposit, customer, branch where
+  2  deposit.c_name = customer.c_name and deposit.b_name = branch.b_name
+  3  and branch.city in (select city from branch,deposit where deposit.b_name=branch.b_name
+  4  and deposit.c_name='SUPROTIK') and customer.city in (select city from customer where
+  5  c_name='CHANDAN');
+
+C_NAME                                                                                              
+----------                                                                                          
+SUPROTIK                                                                                            
+
+SQL> select deposit.c_name from deposit, customer, branch where
+  2  deposit.c_name = customer.c_name and deposit.b_name = branch.b_name
+  3  and branch.city='Kolkata' and customer.city='Kolkata';
+
+C_NAME                                                                                              
+----------                                                                                          
+CHANDAN                                                                                             
+
+SQL> select deposit.c_name from deposit, customer, borrow where
+  2  deposit.c_name = customer.c_name and  deposit.c_name = borrow.c_name
+  3  and customer.city in (select city from customer where customer.c_name='VIVEK');
+
+no rows selected
+
+SQL> select deposit.c_name from deposit, customer, borrow where
+  2  deposit.c_name = customer.c_name and  deposit.c_name = borrow.c_name
+  3   and customer.city in (select city from customer where customer.c_name='MILIND');
+
+C_NAME                                                                                              
+----------                                                                                          
+MILIND                                                                                              
+
+SQL> select deposit.c_name from deposit,customer,branch where
+  2  customer.city='Kolkata' and branch.city in (select city from branch,deposit where deposit.b_name=branch.b_name and deposit.c_name='SUPROTIK')
+  3  union
+  4  select borrow.c_name from borrow,customer,branch where
+  5  customer.city='Kolkata' and branch.city in (select city from branch,deposit where deposit.b_name=branch.b_name and deposit.c_name='SUPROTIK');
+
+C_NAME                                                                                              
+----------                                                                                          
+CHANDAN                                                                                             
+MILIND                                                                                              
+SUPROTIK                                                                                            
+
+SQL> select deposit.c_name from deposit,customer,branch where
+  2  deposit.c_name=customer.c_name and deposit.b_name=branch.b_name and
+  3  customer.city='Kolkata' and branch.city in (select city from branch,deposit where
+  4  deposit.b_name=branch.b_name and deposit.c_name='SUPROTIK')
+  5  union
+  6  select borrow.c_name from borrow,customer,branch where
+  7  borrow.c_name=customer.c_name and borrow.b_name=branch.b_name and
+  8  customer.city='Kolkata' and branch.city in (select city from branch,deposit where
+  9  deposit.b_name=branch.b_name and deposit.c_name='SUPROTIK');
+
+C_NAME                                                                                              
+----------                                                                                          
+SUPROTIK                                                                                            
+
+SQL> select * from branch;
+
+B_NAME     CITY                                                                                     
+---------- ----------                                                                               
+Behala     Kolkata                                                                                  
+Chandni    Delhi                                                                                    
+Navi       Mumbai                                                                                   
+
+SQL> select city from borrow where borrow.b_name in
+  2  (select borrow.b_name from borrow,deposit where
+  3  borrow.b_name
+  4  
+SQL> select city from branch where deposit.b_name=branch.b_name
+  2  
+SQL> select city from branch where deposit.b_name=branch.b_name
+  2  and branch.b_name in (select
+  3  
+SQL> select city from branch where branch.b_name in (select branch.b_name from deposit,branch
+  2  where branch.b_name=deposit.b_name and deposit.c_name='VIVEK'
+  3  union
+  4  select branch.b_name from deposit,branch
+  5  where branch.b_name=deposit.b_name and deposit.c_name='MILIND');
+
+CITY                                                                                                
+----------                                                                                          
+Mumbai                                                                                              
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+
+SQL> select city from branch where branch.b_name in (select branch.b_name from deposit,branch
+  2  where branch.b_name=deposit.b_name and deposit.c_name='SUPROTIK'
+  3  union
+  4  select branch.b_name from deposit,branch
+  5  where branch.b_name=deposit.b_name and deposit.c_name='MILIND');
+
+CITY                                                                                                
+----------                                                                                          
+Delhi                                                                                               
+Mumbai                                                                                              
+
+SQL> select b_name from deposit group by b_name having count(c_name) >= all(select count(c_name)
+  2  from deposit group by b_name);
+
+B_NAME                                                                                              
+----------                                                                                          
+Behala                                                                                              
+Chandni                                                                                             
+Navi                                                                                                
+
+SQL> all(select count(c_name)
+SP2-0042: unknown command beginning "all(select..." - rest of line ignored.
+SQL> all(select count(c_name) from deposit group by b_name;
+SP2-0042: unknown command beginning "all(select..." - rest of line ignored.
+SQL> select b_name from deposit group by b_name having count(c_name);
+select b_name from deposit group by b_name having count(c_name)
+                                                              *
+ERROR at line 1:
+ORA-00920: invalid relational operator 
+
+
+SQL> select count(c_name) from deposit group by b_name;
+
+COUNT(C_NAME)                                                                                       
+-------------                                                                                       
+            1                                                                                       
+            1                                                                                       
+            1                                                                                       
+
+SQL> select count(c_name) from deposit;
+
+COUNT(C_NAME)                                                                                       
+-------------                                                                                       
+            3                                                                                       
+
+SQL> insert into deposit values(
+  2  
+SQL> desc deposit;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ACT_NO                                                NOT NULL VARCHAR2(10)
+ C_NAME                                                         VARCHAR2(10)
+ B_NAME                                                         VARCHAR2(10)
+ AMOUNT                                                NOT NULL NUMBER(8,2)
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+
+SQL> insert into deposit values('&act_no','&c_name',
+  2  
+SQL> select * from customer;
+
+C_NAME     CITY                                                                                     
+---------- ----------                                                                               
+CHANDAN    Kolkata                                                                                  
+MILIND     Delhi                                                                                    
+VIVEK      Mumbai                                                                                   
+SUPROTIK   Kolkata                                                                                  
+
+SQL> insert into deposit values('&act_no','&c_name','&b_name','&amount');
+Enter value for act_no: 4
+Enter value for c_name: VIVEK
+Enter value for b_name: Behala
+Enter value for amount: 4000
+old   1: insert into deposit values('&act_no','&c_name','&b_name','&amount')
+new   1: insert into deposit values('4','VIVEK','Behala','4000')
+
+1 row created.
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+4          VIVEK      Behala          4000                                                          
+
+SQL> select b_name from deposit group by b_name having count(c_name) >= all(select count(c_name)
+  2  from deposit group by b_name);
+
+B_NAME                                                                                              
+----------                                                                                          
+Behala                                                                                              
+
+SQL>  select c_name from deposit where amount=a in
+  2  (select max(amount) from deposit);
+ select c_name from deposit where amount=a in
+                                           *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select c_name from deposit where amount=
+  2  (select max(amount) from deposit);
+
+C_NAME                                                                                              
+----------                                                                                          
+CHANDAN                                                                                             
+
+SQL> spool off;

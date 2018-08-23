@@ -1,0 +1,581 @@
+SQL> select * from tab;
+
+TNAME                          TABTYPE CLUSTERID                                                    
+------------------------------ ------- ---------                                                    
+ACCOUNT                        TABLE                                                                
+BONUS                          TABLE                                                                
+CUST                           TABLE                                                                
+DEPT                           TABLE                                                                
+EMP                            TABLE                                                                
+INVOICE                        TABLE                                                                
+MOVIE                          TABLE                                                                
+RECEIPT                        TABLE                                                                
+SALGRADE                       TABLE                                                                
+STUDENT                        TABLE                                                                
+
+10 rows selected.
+
+SQL> create table deposit(
+  2  Act_no varchar2(10)
+  3  C_name varchar2(10)
+  4  B_name varchar2(10)
+  5  amount number(8,2) not null
+  6  primary key(Act_no)
+  7  foreign key(C_name,B_name)
+  8  );
+create table deposit(
+                    *
+ERROR at line 1:
+ORA-00922: missing or invalid option 
+
+
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10)
+  4  C_name varchar2(10)
+  5  B_name varchar2(10)
+  6  amount number(8,2) not null
+  7  primary key(Act_no)
+  8  foreign key(C_name,B_name)
+  9  );
+(
+*
+ERROR at line 2:
+ORA-00922: missing or invalid option 
+
+
+SQL> desc deposit
+ERROR:
+ORA-04043: object deposit does not exist 
+
+
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10)
+  4  C_name varchar2(10)
+  5  B_name varchar2(10)
+  6  amount number(8,2) not null
+  7  primary key(Act_no)
+  8  foreign key(C_name,B_name)
+  9  );
+(
+*
+ERROR at line 2:
+ORA-00922: missing or invalid option 
+
+
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10)
+  4  C_name varchar2(10)
+  5  B_name varchar2(10)
+  6  amount number(8,2) not null
+  7  primary key(Act_no)
+  8  );
+(
+*
+ERROR at line 2:
+ORA-00922: missing or invalid option 
+
+
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10),
+  4  C_name varchar2(10),
+  5  B_name varchar2(10),
+  6  amount number(8,2) not null,
+  7  primary key(Act_no),
+  8  foreign key(C_name,B_name)
+  9  );
+)
+*
+ERROR at line 9:
+ORA-00905: missing keyword 
+
+
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10),
+  4  C_name varchar2(10),
+  5  B_name varchar2(10),
+  6  amount number(8,2) not null,
+  7  primary key(Act_no));
+
+Table created.
+
+SQL> delete table deposit
+  2  ;
+delete table deposit
+       *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> delete deposit;
+
+0 rows deleted.
+
+SQL> desc deposit
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ACT_NO                                                NOT NULL VARCHAR2(10)
+ C_NAME                                                         VARCHAR2(10)
+ B_NAME                                                         VARCHAR2(10)
+ AMOUNT                                                NOT NULL NUMBER(8,2)
+
+SQL> drop table deposit
+  2  ;
+
+Table dropped.
+
+SQL> create table branch
+  2  (
+  3  B_name varchar2(10),
+  4  city varchar2(10),
+  5  CONSTRAINT citynames CHECK (city in ('Delhi','Kolkata','Mumbai')),
+  6  primary key(B_name)
+  7  );
+
+Table created.
+
+SQL> desc branch;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ B_NAME                                                NOT NULL VARCHAR2(10)
+ CITY                                                           VARCHAR2(10)
+
+SQL> create table Customer
+  2  (C_name varchar2(10),
+  3  city varchar2(10),
+  4  
+SQL> dvgs
+SP2-0042: unknown command "dvgs" - rest of line ignored.
+SQL> create table Customer
+  2  (
+  3  C_name varchar2(10),
+  4  city varchar2(10) not null,
+  5  CONSTRAINT c_namesUp check (C_name = upper(C_name)),
+  6  primary key(C_name)
+  7  );
+
+Table created.
+
+SQL> desc customer
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ C_NAME                                                NOT NULL VARCHAR2(10)
+ CITY                                                  NOT NULL VARCHAR2(10)
+
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10),
+  4  C_name varchar2(10),
+  5  B_name varchar2(10),
+  6  amount number(8,2) not null,
+  7  primary key(Act_no),
+  8  foreign key(C_name,B_name),
+  9  
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10),
+  4  C_name varchar2(10),
+  5  B_name varchar2(10),
+  6  amount number(8,2) not null,
+  7  primary key(Act_no),
+  8  foreign key(C_name,B_name)
+  9  references branch(b_name), customer(c_name)
+ 10  );
+references branch(b_name), customer(c_name)
+                         *
+ERROR at line 9:
+ORA-02256: number of referencing columns must match referenced columns 
+
+
+SQL>  create table deposit
+  2   (
+  3   Act_no varchar2(10),
+  4   C_name varchar2(10),
+  5   B_name varchar2(10),
+  6   amount number(8,2) not null,
+  7   primary key(Act_no),
+  8   foreign key(C_name)
+  9  references customer(c_name)
+ 10  foreign key(B_name)
+ 11  
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10),
+  4  C_name varchar2(10),
+  5  B_name varchar2(10),
+  6  amount number(8,2) not null
+  7  primary key(Act_no),
+  8  foreign key(C_name)
+  9  eferences customer(c_name),
+ 10  
+SQL> create table deposit
+  2  (
+  3  Act_no varchar2(10),
+  4  C_name varchar2(10),
+  5  B_name varchar2(10),
+  6  amount number(8,2) not null,
+  7  primary key(Act_no),
+  8  foreign key(C_name)
+  9  references customer(c_name),
+ 10  foreign key(B_name)
+ 11  references branch(B_name)
+ 12  );
+
+Table created.
+
+SQL> desc deposit
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ACT_NO                                                NOT NULL VARCHAR2(10)
+ C_NAME                                                         VARCHAR2(10)
+ B_NAME                                                         VARCHAR2(10)
+ AMOUNT                                                NOT NULL NUMBER(8,2)
+
+SQL> create table borrow
+  2  (
+  3  loan_no varchar2(10),
+  4  b_name varchar2(10),
+  5  c_name varcahr(10),
+  6  amount
+  7  
+SQL> 
+SQL> 
+SQL> create table borrow
+  2  (
+  3  loan_no varchar2(10),
+  4  b_name varchar2(10),
+  5  c_name varchar2(10),
+  6  amount number(8,2),
+  7  primary key(loan_no),
+  8  CONSTRAINT loan_namecaps check(loan_no = upper(loan_no)),
+  9  CONSTRAINT amt_1000 check(amount > 1000),
+ 10  foreign key(C_name)
+ 11  references customer(c_name),
+ 12  foreign key(B_name)
+ 13  references branch(b_name)
+ 14  );
+
+Table created.
+
+SQL> insert into branch
+  2  (
+  3  values(
+  4  
+SQL> desc branch
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ B_NAME                                                NOT NULL VARCHAR2(10)
+ CITY                                                           VARCHAR2(10)
+
+SQL> insert into branch
+  2  (
+  3  values('&b_name','&city'));
+Enter value for b_name: Behala
+Enter value for city: Kolkata
+old   3: values('&b_name','&city'))
+new   3: values('Behala','Kolkata'))
+values('Behala','Kolkata'))
+*
+ERROR at line 3:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> insert into branch values('&b_name','&city');
+Enter value for b_name: Behala
+Enter value for city: Kolkata
+old   1: insert into branch values('&b_name','&city')
+new   1: insert into branch values('Behala','Kolkata')
+
+1 row created.
+
+SQL> /
+Enter value for b_name: Chandi
+Enter value for city: Dehl
+old   1: insert into branch values('&b_name','&city')
+new   1: insert into branch values('Chandi','Dehl')
+insert into branch values('Chandi','Dehl')
+*
+ERROR at line 1:
+ORA-02290: check constraint (SCOTT.CITYNAMES) violated 
+
+
+SQL> /
+Enter value for b_name: Chandni
+Enter value for city: Dehli
+old   1: insert into branch values('&b_name','&city')
+new   1: insert into branch values('Chandni','Dehli')
+insert into branch values('Chandni','Dehli')
+*
+ERROR at line 1:
+ORA-02290: check constraint (SCOTT.CITYNAMES) violated 
+
+
+SQL> SCOTT.CITYNAMES
+SP2-0042: unknown command beginning "SCOTT.CITY..." - rest of line ignored.
+SQL> /
+Enter value for b_name: Chandni
+Enter value for city: Delhi
+old   1: insert into branch values('&b_name','&city')
+new   1: insert into branch values('Chandni','Delhi')
+
+1 row created.
+
+SQL> /
+Enter value for b_name: Navi
+Enter value for city: Mumbai
+old   1: insert into branch values('&b_name','&city')
+new   1: insert into branch values('Navi','Mumbai')
+
+1 row created.
+
+SQL> select
+  2  * from branch
+  3  ;
+
+B_NAME     CITY                                                                                     
+---------- ----------                                                                               
+Behala     Kolkata                                                                                  
+Chandni    Delhi                                                                                    
+Navi       Mumbai                                                                                   
+
+SQL> insert into customer values('&c_name','&city');
+Enter value for c_name: CHANDAN
+Enter value for city: Kolkata
+old   1: insert into customer values('&c_name','&city')
+new   1: insert into customer values('CHANDAN','Kolkata')
+
+1 row created.
+
+SQL> /
+Enter value for c_name: MILIND
+Enter value for city: Delhi
+old   1: insert into customer values('&c_name','&city')
+new   1: insert into customer values('MILIND','Delhi')
+
+1 row created.
+
+SQL> /
+Enter value for c_name: VIVEK
+Enter value for city: Mumbai
+old   1: insert into customer values('&c_name','&city')
+new   1: insert into customer values('VIVEK','Mumbai')
+
+1 row created.
+
+SQL> /
+Enter value for c_name: SUPROTIK
+Enter value for city: Kolkata
+old   1: insert into customer values('&c_name','&city')
+new   1: insert into customer values('SUPROTIK','Kolkata')
+
+1 row created.
+
+SQL> select * from customer
+  2  ;
+
+C_NAME     CITY                                                                                     
+---------- ----------                                                                               
+CHANDAN    Kolkata                                                                                  
+MILIND     Delhi                                                                                    
+VIVEK      Mumbai                                                                                   
+SUPROTIK   Kolkata                                                                                  
+
+SQL> insert into deposit values('&act_no','&c_name','&b_name','&amount');
+Enter value for act_no: 1
+Enter value for c_name: SUPROTIK
+Enter value for b_name: Chandni
+Enter value for amount: 3000
+old   1: insert into deposit values('&act_no','&c_name','&b_name','&amount')
+new   1: insert into deposit values('1','SUPROTIK','Chandni','3000')
+
+1 row created.
+
+SQL> select * from customer
+  2  ;
+
+C_NAME     CITY                                                                                     
+---------- ----------                                                                               
+CHANDAN    Kolkata                                                                                  
+MILIND     Delhi                                                                                    
+VIVEK      Mumbai                                                                                   
+SUPROTIK   Kolkata                                                                                  
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+
+SQL> /
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+
+SQL> insert into deposit values('&act_no','&c_name','&b_name','&amount');
+Enter value for act_no: 2
+Enter value for c_name: CHANDAN
+Enter value for b_name: Behala
+Enter value for amount: 50000
+old   1: insert into deposit values('&act_no','&c_name','&b_name','&amount')
+new   1: insert into deposit values('2','CHANDAN','Behala','50000')
+
+1 row created.
+
+SQL> /
+Enter value for act_no: 3
+Enter value for c_name: MILIND
+Enter value for b_name: ;
+Enter value for amount: ;
+old   1: insert into deposit values('&act_no','&c_name','&b_name','&amount')
+new   1: insert into deposit values('3','MILIND',';',';')
+insert into deposit values('3','MILIND',';',';')
+                                            *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SQL> select * from branch
+  2  ;
+
+B_NAME     CITY                                                                                     
+---------- ----------                                                                               
+Behala     Kolkata                                                                                  
+Chandni    Delhi                                                                                    
+Navi       Mumbai                                                                                   
+
+SQL> insert into deposit values('&act_no','&c_name','&b_name','&amount');
+Enter value for act_no: 3
+Enter value for c_name: MILIND
+Enter value for b_name: Navi
+Enter value for amount: 1000
+old   1: insert into deposit values('&act_no','&c_name','&b_name','&amount')
+new   1: insert into deposit values('3','MILIND','Navi','1000')
+
+1 row created.
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+
+SQL> 
+SQL> desc borrow;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ LOAN_NO                                               NOT NULL VARCHAR2(10)
+ B_NAME                                                         VARCHAR2(10)
+ C_NAME                                                         VARCHAR2(10)
+ AMOUNT                                                         NUMBER(8,2)
+
+SQL> insert into borrow values('&Loan_no','&b_name','&c_name','&amount');
+Enter value for loan_no: 1
+Enter value for b_name: Navi
+Enter value for c_name: MILIND
+Enter value for amount: 200
+old   1: insert into borrow values('&Loan_no','&b_name','&c_name','&amount')
+new   1: insert into borrow values('1','Navi','MILIND','200')
+insert into borrow values('1','Navi','MILIND','200')
+          *
+ERROR at line 1:
+ORA-02290: check constraint (SCOTT.AMT_1000) violated 
+
+
+SQL> /
+Enter value for loan_no: 1
+Enter value for b_name: Navi
+Enter value for c_name: MILINd
+Enter value for amount: 
+old   1: insert into borrow values('&Loan_no','&b_name','&c_name','&amount')
+new   1: insert into borrow values('1','Navi','MILINd','')
+insert into borrow values('1','Navi','MILINd','')
+          *
+ERROR at line 1:
+ORA-02291: integrity constraint (SCOTT.SYS_C001271) violated - parent key not found 
+
+
+SQL> 
+SQL> /
+Enter value for loan_no: 1
+Enter value for b_name: Navi
+Enter value for c_name: MILIND
+Enter value for amount: 2000
+old   1: insert into borrow values('&Loan_no','&b_name','&c_name','&amount')
+new   1: insert into borrow values('1','Navi','MILIND','2000')
+
+1 row created.
+
+SQL> /
+Enter value for loan_no: 2
+Enter value for b_name: Behala
+Enter value for c_name: CHANDAN
+Enter value for amount: 5000
+old   1: insert into borrow values('&Loan_no','&b_name','&c_name','&amount')
+new   1: insert into borrow values('2','Behala','CHANDAN','5000')
+
+1 row created.
+
+SQL> select * from borrow
+  2  ;
+
+LOAN_NO    B_NAME     C_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          Navi       MILIND          2000                                                          
+2          Behala     CHANDAN         5000                                                          
+
+SQL> select * from deposit;
+
+ACT_NO     C_NAME     B_NAME        AMOUNT                                                          
+---------- ---------- ---------- ---------                                                          
+1          SUPROTIK   Chandni         3000                                                          
+2          CHANDAN    Behala         50000                                                          
+3          MILIND     Navi            1000                                                          
+
+SQL> select * from customer;
+
+C_NAME     CITY                                                                                     
+---------- ----------                                                                               
+CHANDAN    Kolkata                                                                                  
+MILIND     Delhi                                                                                    
+VIVEK      Mumbai                                                                                   
+SUPROTIK   Kolkata                                                                                  
+
+SQL> select * from branch;
+
+B_NAME     CITY                                                                                     
+---------- ----------                                                                               
+Behala     Kolkata                                                                                  
+Chandni    Delhi                                                                                    
+Navi       Mumbai                                                                                   
+
+SQL> select deposit.c_name from deposit, customer, branch where
+  2  deposit.c_name = customer.c_name and deposit.b_name = branch.b_name
+  3  and branch.city = 'Mumbai' and customer.city = 'Delhi';
+
+C_NAME                                                                                              
+----------                                                                                          
+MILIND                                                                                              
+
+SQL> select deposit.c_name from deposit, customer, branch where
+  2  deposit.c_name = customer.c_name and deposit.b_name = branch.b_name
+  3  and branch.city = customer.city;
+
+C_NAME                                                                                              
+----------                                                                                          
+CHANDAN                                                                                             
+
+SQL> select deposit.c_name from deposit, customer, branch where
+  2  deposit.c_name = customer.c_name and deposit.b_name = branch.b_name
+  3  
+SQL> select deposit.c_name from deposit, customer, branch where
+  2  deposit.c_name = customer.c_name and deposit.b_name = branch.b_name
+  3  and
+  4  
+SQL> spool off;
