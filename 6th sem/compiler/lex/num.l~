@@ -1,0 +1,30 @@
+/*Definition*/
+%{
+	#include <stdio.h>
+	int pfrac=0;
+	int nfrac=0;
+	int pnum=0;
+	int nnum=0;
+%}
+
+/*Rule Section*/
+%%
+-[0-9]*\.[0-9]+ {nfrac++;}
+[0-9]*\.[0-9]+ {pfrac++;}
+
+-[0-9]+ {nnum++;}
+[0-9]+ {pnum++;}
+
+%%
+	
+main()
+{
+	printf("\nEnter some numbers [Press Ctrl+D to exit]:\n");
+	yylex();
+	printf("\nNumber of items counted:\n");
+	printf("\n>Positive Fractions: %d",pfrac);
+	printf("\n>Negative Fractions: %d",nfrac);
+	printf("\n>Positive Numbers: %d",pnum);
+	printf("\n>Negative Numbers: %d\n-------------------------------\n",nnum);
+	return 0;
+}

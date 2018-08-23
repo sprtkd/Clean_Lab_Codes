@@ -1,0 +1,30 @@
+/*Definition*/
+%{
+	#include <stdio.h>
+	int vcount=0;
+	int ccount=0;
+	int ncount=0;
+	int scount=0;
+	int tcount=0;
+%}
+
+/*Rule Section*/
+%%
+[\t] {tcount++;}
+[\n] {ncount++;}
+[ ] {scount++;}
+[AEIOUaeiou] {vcount++;}
+[A-Za-z] {ccount++;}
+%%
+	
+main()
+{
+	printf("\nEnter some text [Press Ctrl+D to exit]:\n");
+	printf("\nNumber of items counted:\n");
+	printf("\n>Vowels: %d",vcount);
+	printf("\n>Consonants: %d",ccount);
+	printf("\n>Newlines: %d",ncount);
+	printf("\n>Spaces: %d",scount);
+	printf("\n>Tabs: %d\n-------------------------------\n",tcount);
+	return 0;
+}

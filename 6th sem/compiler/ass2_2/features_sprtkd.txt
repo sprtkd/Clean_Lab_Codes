@@ -1,0 +1,6 @@
+tokenise:
+    normalise:
+	+//enter # to mark end
+	+//space cleanup and stray operator
+	+//unwanted repeated operator detection
+	+//check paranthesis
