@@ -1,5 +1,5 @@
-﻿clc;
-img=load('l256.dat');
+clc;
+img=load('image/l256.dat');
 img=uint8(img);
 figure('Name','Actual'),imshow(img);
 waitforbuttonpress;

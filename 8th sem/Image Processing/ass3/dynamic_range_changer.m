@@ -1,4 +1,4 @@
-﻿function [ new_img ] = dynamic_range_changer( img, c, d )
+function [ new_img ] = dynamic_range_changer( img, c, d )
 [row,col,channels]=size(img);
 b = max(img(:));
 a = min(img(:));
@@ -14,4 +14,4 @@ for i=1:row
 end
 
 new_img = uint8(new_img);
-endfunction
+end

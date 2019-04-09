@@ -1,4 +1,4 @@
-﻿function [ up_img ] = upsampler_avg( img )
+function [ up_img ] = upsampler_avg( img )
 [row,col,channels]=size(img);
 new_row = round(row*2);
 new_col = round(col*2);
@@ -45,5 +45,5 @@ for i=1:new_row
 end
 
 up_img = uint8(up_img);
-endfunction
+end
 

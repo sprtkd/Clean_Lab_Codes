@@ -1,4 +1,4 @@
-﻿function [ new_img ] = gray_slicer( img, c, d )
+function [ new_img ] = gray_slicer( img, c, d )
 [row,col,channels]=size(img);
 
 new_img = zeros(row,col,1);
@@ -14,4 +14,4 @@ for i=1:row
 end
 
 new_img = uint8(new_img);
-endfunction
+end

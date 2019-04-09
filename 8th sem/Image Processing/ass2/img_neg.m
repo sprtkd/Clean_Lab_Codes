@@ -1,4 +1,4 @@
-﻿function [ neg_img ] = img_neg( img )
+function [ neg_img ] = img_neg( img )
 [row,col,channels]=size(img);
 
 neg_img = zeros(row,col,1);

@@ -1,0 +1,9 @@
+function [ new_img ] = scaling_xy( img,mulh,mulv )
+[row,col,channels]=size(img);
+new_rows = int(mulv*row);
+new_cols = int(mulh*col);
+new_img = double(zeros(new_rows,new_cols,1));
+
+
+end
+
